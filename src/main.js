@@ -190,6 +190,8 @@ var SlotUI = {
     reelStrips: [[], [], []],
 
     init: function () {
+        var self = this;
+
         this.reelEls = [
             document.getElementById('reel-1'),
             document.getElementById('reel-2'),
@@ -209,6 +211,10 @@ var SlotUI = {
         this.loseSound = document.getElementById('lose-sound');
 
         if (!this.spinBtn) return;
+
+        // Responsive symbol height
+        this.updateSymbolHeight();
+        window.addEventListener('resize', function () { self.updateSymbolHeight(); });
 
         this.buildChaserLights();
         this.buildInitialReels();
@@ -423,20 +429,7 @@ var SlotUI = {
         }
     },
 
-    init: function () {
-        var self = this;
-        this.updateSymbolHeight();
-        window.addEventListener('resize', function () { self.updateSymbolHeight(); });
 
-        if (!this.spinBtn) return;
-
-        this.buildChaserLights();
-        this.buildInitialReels();
-        this.buildPaytable();
-        this.bindEvents();
-        this.updateDisplay();
-        this.startChaserAnimation();
-    },
 
     bindEvents: function () {
         var self = this;
