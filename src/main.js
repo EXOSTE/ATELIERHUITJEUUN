@@ -125,8 +125,12 @@ var SlotEngine = {
 
         if (rnd < 0.65) {
             // LOSE (65%): 3 different symbols (no cherry)
-            var noCherryPool = pool.filter(function (s) { return s.id !== 'cherry'; });
-            noCherryPool.sort(function () { return 0.5 - Math.random(); });
+            var noCherryPool = pool.filter(function (s) {
+                return s.id !== 'cherry';
+            });
+            noCherryPool.sort(function () {
+                return 0.5 - Math.random();
+            });
             centerSymbols = [noCherryPool[0], noCherryPool[1], noCherryPool[2]];
         } else if (rnd < 0.85) {
             // SMALL WIN (20%): 1 cherry, 2 distinct non-cherries
@@ -140,9 +144,10 @@ var SlotEngine = {
                 return s.id === 'cherry';
             });
             centerSymbols = [noCherryPool[0], noCherryPool[1], cherry];
-            centerSymbols.sort(function () { return 0.5 - Math.random(); });
-        }
-        else if (rnd < 0.96) {
+            centerSymbols.sort(function () {
+                return 0.5 - Math.random();
+            });
+        } else if (rnd < 0.96) {
             // MEDIUM WIN (11%): 2 matches
             var weightedPool = [];
             pool.forEach(function (s) {
@@ -150,15 +155,20 @@ var SlotEngine = {
                 for (var i = 0; i < weight; i++) weightedPool.push(s);
             });
             var matchSym = weightedPool[Math.floor(Math.random() * weightedPool.length)];
-            var distinctPool = pool.filter(function (s) { return s.id !== matchSym.id && s.id !== 'cherry'; });
+            var distinctPool = pool.filter(function (s) {
+                return s.id !== matchSym.id && s.id !== 'cherry';
+            });
             if (distinctPool.length === 0) distinctPool = pool;
             var otherSym = distinctPool[Math.floor(Math.random() * distinctPool.length)];
             centerSymbols = [matchSym, matchSym, otherSym];
-            centerSymbols.sort(function () { return 0.5 - Math.random(); });
-        }
-        else if (rnd < 0.995) {
+            centerSymbols.sort(function () {
+                return 0.5 - Math.random();
+            });
+        } else if (rnd < 0.995) {
             // BIG WIN (3.5%): 3 matches of anything but 'seven'
-            var noJackpotPool = pool.filter(function (s) { return s.id !== 'seven'; });
+            var noJackpotPool = pool.filter(function (s) {
+                return s.id !== 'seven';
+            });
             var weightedPool = [];
             noJackpotPool.forEach(function (s) {
                 var weight = Math.max(1, Math.round(30 / s.multiplier));
@@ -166,10 +176,11 @@ var SlotEngine = {
             });
             var matchSym = weightedPool[Math.floor(Math.random() * weightedPool.length)];
             centerSymbols = [matchSym, matchSym, matchSym];
-        }
-        else {
+        } else {
             // JACKPOT (0.5%): 3 Sevens
-            var seven = pool.find(function (s) { return s.id === 'seven'; });
+            var seven = pool.find(function (s) {
+                return s.id === 'seven';
+            });
             centerSymbols = [seven, seven, seven];
         }
 
@@ -187,26 +198,44 @@ var SlotEngine = {
     },
 
     calculatePayout: function (symbols) {
-        var a = symbols[0], b = symbols[1], c = symbols[2];
+        var a = symbols[0],
+            b = symbols[1],
+            c = symbols[2];
 
         // 3 of a kind
         if (a.id === b.id && b.id === c.id) {
-            return { type: 'jackpot', multiplier: a.multiplier, amount: this.bet * a.multiplier };
+            return {
+                type: 'jackpot',
+                multiplier: a.multiplier,
+                amount: this.bet * a.multiplier
+            };
         }
 
         // 2 of a kind
         if (a.id === b.id || b.id === c.id || a.id === c.id) {
             var matchSymbol = (a.id === b.id) ? a : c;
             var mult = Math.max(2, Math.round(matchSymbol.multiplier / 5));
-            return { type: 'win', multiplier: mult, amount: this.bet * mult };
+            return {
+                type: 'win',
+                multiplier: mult,
+                amount: this.bet * mult
+            };
         }
 
         // Any cherry = small win
         if (a.id === 'cherry' || b.id === 'cherry' || c.id === 'cherry') {
-            return { type: 'small', multiplier: 1, amount: this.bet };
+            return {
+                type: 'small',
+                multiplier: 1,
+                amount: this.bet
+            };
         }
 
-        return { type: 'lose', multiplier: 0, amount: 0 };
+        return {
+            type: 'lose',
+            multiplier: 0,
+            amount: 0
+        };
     },
 
     finishSpin: function (payout) {
@@ -233,7 +262,11 @@ var SlotEngine = {
 
 var SlotUI = {
     reelEls: [],
-    reelStrips: [[], [], []],
+    reelStrips: [
+        [],
+        [],
+        []
+    ],
 
     init: function () {
         this.reelEls = [
@@ -476,6 +509,12 @@ var SlotUI = {
             self.updateDisplay();
         });
 
+        document.getElementById('toggle-credits-modal').addEventListener('click', function () {
+            document.getElementById('add-credits-modal').classList.add('open');
+            // SlotEngine.addCredits(100);
+            // self.updateDisplay();
+        });
+
         // Paytable
         document.getElementById('paytable-toggle').addEventListener('click', function () {
             document.getElementById('paytable-overlay').classList.add('open');
@@ -571,7 +610,7 @@ var SlotUI = {
         el.currentTime = 0;
         el.loop = !!loop;
         el.volume = 0.4;
-        el.play().catch(function () { });
+        el.play().catch(function () {});
     },
     stopSound: function (el) {
         if (!el) return;
