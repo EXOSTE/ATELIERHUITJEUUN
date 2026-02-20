@@ -7,22 +7,61 @@
 // CONFIG & SYMBOLS
 // ============================================================
 
-var SYMBOLS = [
-    { id: 'seven', emoji: '7️⃣', name: 'Sept', multiplier: 50 },
-    { id: 'diamond', emoji: '💎', name: 'Diamant', multiplier: 30 },
-    { id: 'bell', emoji: '🔔', name: 'Cloche', multiplier: 20 },
-    { id: 'cherry', emoji: '🍒', name: 'Cerise', multiplier: 15 },
-    { id: 'lemon', emoji: '🍋', name: 'Citron', multiplier: 10 },
-    { id: 'grape', emoji: '🍇', name: 'Raisin', multiplier: 8 },
-    { id: 'watermelon', emoji: '🍉', name: 'Pastèque', multiplier: 5 },
-    { id: 'bar', emoji: '🅱️', name: 'BAR', multiplier: 3 }
+var SYMBOLS = [{
+        id: 'seven',
+        emoji: '7️⃣',
+        name: 'Sept',
+        multiplier: 50
+    },
+    {
+        id: 'diamond',
+        emoji: '💎',
+        name: 'Diamant',
+        multiplier: 30
+    },
+    {
+        id: 'bell',
+        emoji: '🔔',
+        name: 'Cloche',
+        multiplier: 20
+    },
+    {
+        id: 'cherry',
+        emoji: '🍒',
+        name: 'Cerise',
+        multiplier: 15
+    },
+    {
+        id: 'lemon',
+        emoji: '🍋',
+        name: 'Citron',
+        multiplier: 10
+    },
+    {
+        id: 'grape',
+        emoji: '🍇',
+        name: 'Raisin',
+        multiplier: 8
+    },
+    {
+        id: 'watermelon',
+        emoji: '🍉',
+        name: 'Pastèque',
+        multiplier: 5
+    },
+    {
+        id: 'apple',
+        emoji: '🍎',
+        name: 'Pomme',
+        multiplier: 3
+    }
 ];
 
 var REEL_LENGTH = 30; // Number of symbols per reel strip
 var SYMBOL_HEIGHT = 70; // px, must match CSS .reel-symbol height
 var VISIBLE_SYMBOLS = 3;
 var SPIN_DURATION_BASE = 2000; // ms
-var SPIN_DURATION_STEP = 500;  // Extra delay per reel
+var SPIN_DURATION_STEP = 500; // Extra delay per reel
 var NUM_CHASER_LIGHTS = 20;
 
 // ============================================================
@@ -80,19 +119,26 @@ var SlotEngine = {
         // --- OUTCOME RNG ENGINE ---
         var rnd = Math.random();
         var centerSymbols = [];
-        var pool = SYMBOLS.map(function (s) { return s; });
+        var pool = SYMBOLS.map(function (s) {
+            return s;
+        });
 
         if (rnd < 0.65) {
             // LOSE (65%): 3 different symbols (no cherry)
             var noCherryPool = pool.filter(function (s) { return s.id !== 'cherry'; });
             noCherryPool.sort(function () { return 0.5 - Math.random(); });
             centerSymbols = [noCherryPool[0], noCherryPool[1], noCherryPool[2]];
-        }
-        else if (rnd < 0.85) {
+        } else if (rnd < 0.85) {
             // SMALL WIN (20%): 1 cherry, 2 distinct non-cherries
-            var noCherryPool = pool.filter(function (s) { return s.id !== 'cherry'; });
-            noCherryPool.sort(function () { return 0.5 - Math.random(); });
-            var cherry = pool.find(function (s) { return s.id === 'cherry'; });
+            var noCherryPool = pool.filter(function (s) {
+                return s.id !== 'cherry';
+            });
+            noCherryPool.sort(function () {
+                return 0.5 - Math.random();
+            });
+            var cherry = pool.find(function (s) {
+                return s.id === 'cherry';
+            });
             centerSymbols = [noCherryPool[0], noCherryPool[1], cherry];
             centerSymbols.sort(function () { return 0.5 - Math.random(); });
         }
