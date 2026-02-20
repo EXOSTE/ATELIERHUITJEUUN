@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mini-Jeux JS | Slot Machine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link href="./src/style.css" rel="stylesheet">
   <link
     href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;900&display=swap"
@@ -26,30 +27,47 @@
     </div>
   </nav>
 
-  <!-- Game Layout: Sidebar + Machine -->
-  <div class="game-layout" id="game-layout">
+  <!-- Main Game Layout: History Sidebar + Machine -->
+  <div class="flex items-start justify-center gap-6 px-4 py-2 w-full max-w-7xl mx-auto" id="game-layout">
 
-    <!-- History Sidebar -->
-    <aside class="history-sidebar" id="history-panel">
-      <div class="history-sidebar__header">
-        <h3>📜 Historique</h3>
-        <button class="history-sidebar__close" id="history-close">✕</button>
+    <!-- History Sidebar (hidden by default, shown on toggle) -->
+    <aside class="hidden w-80 flex-shrink-0 rounded-2xl border border-white/10 overflow-hidden self-stretch"
+      id="history-panel"
+      style="background: linear-gradient(180deg, rgba(13,6,24,0.95), rgba(26,10,46,0.9)); max-height: 90vh;">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-white/10">
+        <h3 class="font-['Orbitron'] text-xs font-bold tracking-widest uppercase" style="color: var(--neon-gold);">📜
+          Historique</h3>
+        <button
+          class="w-7 h-7 rounded-full border border-white/20 text-white/40 flex items-center justify-center text-sm hover:border-pink-500 hover:text-pink-500 transition-all cursor-pointer bg-transparent"
+          id="history-close">✕</button>
       </div>
-      <div class="history-sidebar__body" id="history-body">
-        <table class="history-table">
-          <thead>
+      <div class="overflow-y-auto p-0" id="history-body"
+        style="max-height: calc(90vh - 50px); scrollbar-width: thin; scrollbar-color: #00e5ff rgba(0,0,0,0.2);">
+        <table class="history-table w-full border-collapse text-xs font-['Inter']">
+          <thead class="sticky top-0 z-10">
             <tr>
-              <th>Heure</th>
-              <th>Mise</th>
-              <th>Résultat</th>
-              <th>Solde</th>
-              <th>Combo</th>
+              <th
+                class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
+                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">Heure</th>
+              <th
+                class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
+                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">Mise</th>
+              <th
+                class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
+                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">Résultat</th>
+              <th
+                class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
+                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">Solde</th>
+              <th
+                class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
+                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">Combo</th>
             </tr>
           </thead>
           <tbody id="history-tbody">
+            <!-- JS injects history rows -->
           </tbody>
         </table>
-        <p class="history-empty" id="history-empty">Aucune partie jouée</p>
+        <p class="text-center text-white/30 italic text-xs py-6" id="history-empty">Aucune partie jouée</p>
       </div>
     </aside>
 
@@ -158,10 +176,15 @@
       <!-- Result Message -->
       <div class="result-message" id="result-message"></div>
 
-      <!-- History Toggle -->
-      <div class="history-toggle" id="history-toggle">
-        <span>📜</span>
-        <span>Historique</span>
+      <!-- History Toggle Button -->
+      <div
+        class="flex items-center gap-2 mx-6 mt-3 mb-1 px-4 py-2 rounded-xl border border-white/10 cursor-pointer transition-all hover:border-cyan-400 hover:shadow-[0_0_12px_rgba(0,229,255,0.2)]"
+        id="history-toggle" style="background: linear-gradient(145deg, rgba(26,10,46,0.8), rgba(13,6,24,0.9));">
+        <span class="text-sm">📜</span>
+        <span class="font-['Orbitron'] text-[0.65rem] font-bold tracking-widest uppercase"
+          style="color: var(--neon-cyan);">
+          Historique
+        </span>
       </div>
 
     </main>

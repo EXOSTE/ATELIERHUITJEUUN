@@ -424,11 +424,10 @@ var SlotUI = {
         var now = new Date();
         var time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0');
         var combo = result.centerSymbols.map(function (s) { return s.emoji; }).join(' ');
-        var bet = SlotEngine.bet;
         var entry = {
             time: time,
-            bet: bet,
-            result: payout.amount > 0 ? '+' + payout.amount : '-' + bet,
+            bet: payout.type === 'lose' ? SlotEngine.bet : (payout.amount / payout.multiplier),
+            result: payout.amount > 0 ? '+' + payout.amount : '-' + SlotEngine.bet,
             resultType: payout.type,
             balance: SlotEngine.credits,
             combo: combo
@@ -449,13 +448,15 @@ var SlotUI = {
             else if (e.resultType === 'win' || e.resultType === 'small') cssClass = 'history-win';
             else cssClass = 'history-lose';
 
-            tr.innerHTML = '<td>' + e.time + '</td>' +
-                '<td>' + e.bet + '</td>' +
-                '<td class="' + cssClass + '">' + e.result + '</td>' +
-                '<td>' + e.balance + '</td>' +
-                '<td>' + e.combo + '</td>';
+            tr.innerHTML = '<td class="px-2 py-2 text-center text-white/80 border-b border-white/5 whitespace-nowrap">' + e.time + '</td>' +
+                '<td class="px-2 py-2 text-center text-white/80 border-b border-white/5 whitespace-nowrap">' + e.bet + '</td>' +
+                '<td class="px-2 py-2 text-center border-b border-white/5 whitespace-nowrap ' + cssClass + '">' + e.result + '</td>' +
+                '<td class="px-2 py-2 text-center text-white/80 border-b border-white/5 whitespace-nowrap">' + e.balance + '</td>' +
+                '<td class="px-2 py-2 text-center border-b border-white/5 whitespace-nowrap">' + e.combo + '</td>';
             tbody.appendChild(tr);
         }
+
+        // Hide empty message
         var emptyMsg = document.getElementById('history-empty');
         if (emptyMsg) emptyMsg.style.display = this.history.length > 0 ? 'none' : 'block';
     },
@@ -466,12 +467,12 @@ var SlotUI = {
         var closeBtn = document.getElementById('history-close');
         if (toggle && panel) {
             toggle.addEventListener('click', function () {
-                panel.classList.toggle('show');
+                panel.classList.toggle('hidden');
             });
         }
         if (closeBtn && panel) {
             closeBtn.addEventListener('click', function () {
-                panel.classList.remove('show');
+                panel.classList.add('hidden');
             });
         }
     },
