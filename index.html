@@ -26,112 +26,146 @@
     </div>
   </nav>
 
-  <!-- SLOT MACHINE -->
-  <main class="machine" id="machine">
+  <!-- Game Layout: Sidebar + Machine -->
+  <div class="game-layout" id="game-layout">
 
-    <!-- Top Neon Sign -->
-    <div class="machine__top-sign">
-      <div class="neon-border"></div>
-      <h1 class="machine__title">
-        <span class="neon-text neon-text--red">S</span><span class="neon-text neon-text--gold">L</span><span
-          class="neon-text neon-text--red">O</span><span class="neon-text neon-text--gold">T</span>
-        <span class="neon-text neon-text--cyan">M</span><span class="neon-text neon-text--pink">A</span><span
-          class="neon-text neon-text--cyan">C</span><span class="neon-text neon-text--pink">H</span><span
-          class="neon-text neon-text--cyan">I</span><span class="neon-text neon-text--pink">N</span><span
-          class="neon-text neon-text--cyan">E</span>
-      </h1>
-      <div class="machine__jackpot-display" id="jackpot-display">
-        <span class="jackpot-label">JACKPOT</span>
-        <span class="jackpot-amount" id="jackpot-amount">1,000</span>
+    <!-- History Sidebar -->
+    <aside class="history-sidebar" id="history-panel">
+      <div class="history-sidebar__header">
+        <h3>📜 Historique</h3>
+        <button class="history-sidebar__close" id="history-close">✕</button>
       </div>
-      <div class="neon-border"></div>
-    </div>
+      <div class="history-sidebar__body" id="history-body">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Heure</th>
+              <th>Mise</th>
+              <th>Résultat</th>
+              <th>Solde</th>
+              <th>Combo</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody">
+          </tbody>
+        </table>
+        <p class="history-empty" id="history-empty">Aucune partie jouée</p>
+      </div>
+    </aside>
 
-    <!-- Chaser Lights (top row) -->
-    <div class="chaser-lights" id="chaser-lights-top">
-      <!-- JS injects lights -->
-    </div>
+    <!-- SLOT MACHINE -->
+    <main class="machine" id="machine">
 
-    <!-- Reels Window -->
-    <div class="reels-frame">
-      <div class="reels-window">
-        <!-- Payline Indicator -->
-        <div class="payline">
-          <div class="payline__arrow payline__arrow--left"></div>
-          <div class="payline__line"></div>
-          <div class="payline__arrow payline__arrow--right"></div>
+      <!-- Top Neon Sign -->
+      <div class="machine__top-sign">
+        <div class="neon-border"></div>
+        <h1 class="machine__title">
+          <span class="neon-text neon-text--red">S</span><span class="neon-text neon-text--gold">L</span><span
+            class="neon-text neon-text--red">O</span><span class="neon-text neon-text--gold">T</span>
+          <span class="neon-text neon-text--cyan">M</span><span class="neon-text neon-text--pink">A</span><span
+            class="neon-text neon-text--cyan">C</span><span class="neon-text neon-text--pink">H</span><span
+            class="neon-text neon-text--cyan">I</span><span class="neon-text neon-text--pink">N</span><span
+            class="neon-text neon-text--cyan">E</span>
+        </h1>
+        <div class="machine__jackpot-display" id="jackpot-display">
+          <span class="jackpot-label">JACKPOT</span>
+          <span class="jackpot-amount" id="jackpot-amount">1,000</span>
         </div>
+        <div class="neon-border"></div>
+      </div>
 
-        <!-- 3 Reels -->
-        <div class="reel-container">
-          <div class="reel" id="reel-1">
-            <!-- JS injects symbols -->
+      <!-- Chaser Lights (top row) -->
+      <div class="chaser-lights" id="chaser-lights-top">
+        <!-- JS injects lights -->
+      </div>
+
+      <!-- Reels Window -->
+      <div class="reels-frame">
+        <div class="reels-window">
+          <!-- Payline Indicator -->
+          <div class="payline">
+            <div class="payline__arrow payline__arrow--left"></div>
+            <div class="payline__line"></div>
+            <div class="payline__arrow payline__arrow--right"></div>
+          </div>
+
+          <!-- 3 Reels -->
+          <div class="reel-container">
+            <div class="reel" id="reel-1">
+              <!-- JS injects symbols -->
+            </div>
+          </div>
+          <div class="reel-separator"></div>
+          <div class="reel-container">
+            <div class="reel" id="reel-2"></div>
+          </div>
+          <div class="reel-separator"></div>
+          <div class="reel-container">
+            <div class="reel" id="reel-3"></div>
           </div>
         </div>
-        <div class="reel-separator"></div>
-        <div class="reel-container">
-          <div class="reel" id="reel-2"></div>
+
+        <!-- Glass Reflection -->
+        <div class="glass-reflection"></div>
+      </div>
+
+      <!-- Chaser Lights (bottom row) -->
+      <div class="chaser-lights" id="chaser-lights-bottom">
+        <!-- JS injects lights -->
+      </div>
+
+      <!-- Info Panel (Credits / Bet / Win) -->
+      <div class="info-panel">
+        <div class="info-block">
+          <span class="info-label">CRÉDIT</span>
+          <span class="info-value" id="credits">100</span>
         </div>
-        <div class="reel-separator"></div>
-        <div class="reel-container">
-          <div class="reel" id="reel-3"></div>
+        <div class="info-block info-block--highlight">
+          <span class="info-label">GAIN</span>
+          <span class="info-value info-value--win" id="win-amount">0</span>
+        </div>
+        <div class="info-block">
+          <span class="info-label">MISE</span>
+          <span class="info-value" id="bet-amount">10</span>
         </div>
       </div>
 
-      <!-- Glass Reflection -->
-      <div class="glass-reflection"></div>
-    </div>
-
-    <!-- Chaser Lights (bottom row) -->
-    <div class="chaser-lights" id="chaser-lights-bottom">
-      <!-- JS injects lights -->
-    </div>
-
-    <!-- Info Panel (Credits / Bet / Win) -->
-    <div class="info-panel">
-      <div class="info-block">
-        <span class="info-label">CRÉDIT</span>
-        <span class="info-value" id="credits">100</span>
-      </div>
-      <div class="info-block info-block--highlight">
-        <span class="info-label">GAIN</span>
-        <span class="info-value info-value--win" id="win-amount">0</span>
-      </div>
-      <div class="info-block">
-        <span class="info-label">MISE</span>
-        <span class="info-value" id="bet-amount">10</span>
-      </div>
-    </div>
-
-    <!-- Controls -->
-    <div class="controls">
-      <div class="controls__left">
-        <button class="btn-control btn-bet-down" id="btn-bet-down" title="Diminuer la mise">
-          <span>−</span>
-        </button>
-        <button class="btn-control btn-bet-up" id="btn-bet-up" title="Augmenter la mise">
-          <span>+</span>
-        </button>
-      </div>
-
-      <button class="btn-spin" id="spin-btn">
-        <div class="btn-spin__inner">
-          <span class="btn-spin__text">SPIN</span>
+      <!-- Controls -->
+      <div class="controls">
+        <div class="controls__left">
+          <button class="btn-control btn-bet-down" id="btn-bet-down" title="Diminuer la mise">
+            <span>−</span>
+          </button>
+          <button class="btn-control btn-bet-up" id="btn-bet-up" title="Augmenter la mise">
+            <span>+</span>
+          </button>
         </div>
-        <div class="btn-spin__ring"></div>
-      </button>
 
-      <div class="controls__right">
-        <button class="btn-control btn-max-bet" id="btn-max-bet" title="Mise max">
-          MAX
+        <button class="btn-spin" id="spin-btn">
+          <div class="btn-spin__inner">
+            <span class="btn-spin__text">SPIN</span>
+          </div>
+          <div class="btn-spin__ring"></div>
         </button>
+
+        <div class="controls__right">
+          <button class="btn-control btn-max-bet" id="btn-max-bet" title="Mise max">
+            MAX
+          </button>
+        </div>
       </div>
-    </div>
 
-    <!-- Result Message -->
-    <div class="result-message" id="result-message"></div>
+      <!-- Result Message -->
+      <div class="result-message" id="result-message"></div>
 
-  </main>
+      <!-- History Toggle -->
+      <div class="history-toggle" id="history-toggle">
+        <span>📜</span>
+        <span>Historique</span>
+      </div>
+
+    </main>
+  </div>
 
   <!-- Pay Table Mini -->
   <div class="paytable-mini" id="paytable-toggle">
