@@ -408,6 +408,36 @@ var SlotUI = {
     },
 
     // --- Events ---
+    updateSymbolHeight: function () {
+        var w = window.innerWidth;
+        if (w <= 380) SYMBOL_HEIGHT = 50;
+        else if (w <= 520) SYMBOL_HEIGHT = 60;
+        else SYMBOL_HEIGHT = 70;
+
+        if (!SlotEngine.isSpinning) {
+            for (var r = 0; r < 3; r++) {
+                if (this.reelEls[r] && this.reelEls[r].children.length > 0) {
+                    this.reelEls[r].style.transform = 'translateY(' + this.getOffset(1) + 'px)';
+                }
+            }
+        }
+    },
+
+    init: function () {
+        var self = this;
+        this.updateSymbolHeight();
+        window.addEventListener('resize', function () { self.updateSymbolHeight(); });
+
+        if (!this.spinBtn) return;
+
+        this.buildChaserLights();
+        this.buildInitialReels();
+        this.buildPaytable();
+        this.bindEvents();
+        this.updateDisplay();
+        this.startChaserAnimation();
+    },
+
     bindEvents: function () {
         var self = this;
 
