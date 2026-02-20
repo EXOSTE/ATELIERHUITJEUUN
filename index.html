@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini-Jeux JS | La Roulette</title>
+  <link href="./src/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">MINI_JEUX<span>.JS</span></div>
+    <div class="nav-links">
+      <a href="/index.html" class="active">La Roulette</a>
+      <a href="/docs.html">Règles & Docs</a>
+    </div>
+  </nav>
+
+  <!-- Main Game Area -->
+  <main class="game-container" id="game-container">
+
+    <!-- Glow Effect base -->
+    <div class="glow-effect" id="glow-effect"></div>
+
+    <header class="game-header">
+      <h1>La Roulette</h1>
+      <p>Actionne le levier pour tenter ta chance.</p>
+    </header>
+
+    <!-- Slot Display -->
+    <div class="slot-display">
+      <!-- 3D Shadow Overlay -->
+      <div class="shadow-overlay top"></div>
+      <div class="shadow-overlay bottom"></div>
+
+      <!-- Center Selection Marker -->
+      <div class="selection-marker">
+        <div class="arrow left"></div>
+        <div class="arrow right"></div>
+      </div>
+
+      <!-- Spinning Reel (Moved via JS) -->
+      <div id="roulette-reel" class="roulette-reel">
+        <!-- JS va injecter les éléments de la roulette ici -->
+      </div>
+    </div>
+
+    <!-- Spin Button (Levier) -->
+    <button id="spin-btn" class="spin-btn group">
+      <span class="btn-content">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
+          </path>
+        </svg>
+        ACTIONNER LE LEVIER
+      </span>
+      <div class="btn-shimmer"></div>
+    </button>
+
+    <!-- Sound Effects -->
+    <audio id="spin-sound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"
+      preload="auto"></audio>
+    <audio id="win-sound" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3"
+      preload="auto"></audio>
+    <audio id="lose-sound" src="https://assets.mixkit.co/active_storage/sfx/2004/2004-preview.mp3"
+      preload="auto"></audio>
+  </main>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
