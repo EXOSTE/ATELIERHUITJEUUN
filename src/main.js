@@ -188,6 +188,7 @@ var SlotEngine = {
 var SlotUI = {
     reelEls: [],
     reelStrips: [[], [], []],
+    history: [],
 
     init: function () {
         var self = this;
@@ -220,6 +221,7 @@ var SlotUI = {
         this.buildInitialReels();
         this.buildPaytable();
         this.bindEvents();
+        this.bindHistoryEvents();
         this.updateDisplay();
         this.startChaserAnimation();
     },
@@ -342,6 +344,9 @@ var SlotUI = {
         this.showResult(payout);
         this.updateDisplay();
 
+        // Record history
+        this.addHistoryEntry(result);
+
         // Sound
         this.stopSound(this.spinSound);
         if (payout.amount > 0) {
@@ -411,6 +416,65 @@ var SlotUI = {
 
     updateWinDisplay: function (amount) {
         this.winEl.textContent = amount;
+    },
+
+    // --- History ---
+    addHistoryEntry: function (result) {
+        var payout = result.payout;
+        var now = new Date();
+        var time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0');
+        var combo = result.centerSymbols.map(function (s) { return s.emoji; }).join(' ');
+        var entry = {
+            time: time,
+            bet: payout.type === 'lose' ? SlotEngine.bet : (payout.amount / payout.multiplier),
+            result: payout.amount > 0 ? '+' + payout.amount : '-' + SlotEngine.bet,
+            resultType: payout.type,
+            balance: SlotEngine.credits,
+            combo: combo
+        };
+        this.history.unshift(entry);
+        this.renderHistory();
+    },
+
+    renderHistory: function () {
+        var tbody = document.getElementById('history-tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        for (var i = 0; i < this.history.length; i++) {
+            var e = this.history[i];
+            var tr = document.createElement('tr');
+            var cssClass = '';
+            if (e.resultType === 'jackpot') cssClass = 'history-jackpot';
+            else if (e.resultType === 'win' || e.resultType === 'small') cssClass = 'history-win';
+            else cssClass = 'history-lose';
+
+            tr.innerHTML = '<td class="px-2 py-2 text-center text-white/80 border-b border-white/5 whitespace-nowrap">' + e.time + '</td>' +
+                '<td class="px-2 py-2 text-center text-white/80 border-b border-white/5 whitespace-nowrap">' + e.bet + '</td>' +
+                '<td class="px-2 py-2 text-center border-b border-white/5 whitespace-nowrap ' + cssClass + '">' + e.result + '</td>' +
+                '<td class="px-2 py-2 text-center text-white/80 border-b border-white/5 whitespace-nowrap">' + e.balance + '</td>' +
+                '<td class="px-2 py-2 text-center border-b border-white/5 whitespace-nowrap">' + e.combo + '</td>';
+            tbody.appendChild(tr);
+        }
+
+        // Hide empty message
+        var emptyMsg = document.getElementById('history-empty');
+        if (emptyMsg) emptyMsg.style.display = this.history.length > 0 ? 'none' : 'block';
+    },
+
+    bindHistoryEvents: function () {
+        var toggle = document.getElementById('history-toggle');
+        var panel = document.getElementById('history-panel');
+        var closeBtn = document.getElementById('history-close');
+        if (toggle && panel) {
+            toggle.addEventListener('click', function () {
+                panel.classList.toggle('hidden');
+            });
+        }
+        if (closeBtn && panel) {
+            closeBtn.addEventListener('click', function () {
+                panel.classList.add('hidden');
+            });
+        }
     },
 
     // --- Events ---
