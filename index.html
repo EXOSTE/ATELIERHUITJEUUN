@@ -1,175 +1,215 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mini-Jeux JS | Slot Machine</title>
-    <link href="./src/style.css" rel="stylesheet">
+    <link href="./src/style.css" rel="stylesheet" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;900&display=swap"
-        rel="stylesheet">
-</head>
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
-
+  <body>
     <!-- Ambient Glow -->
     <div class="ambient-glow ambient-glow--left"></div>
     <div class="ambient-glow ambient-glow--right"></div>
 
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="logo">MINI_JEUX<span>.JS</span></div>
-        <div class="nav-links">
-            <a href="#" id="toggle-credits-modal" class="active">Rajouté des crédits</a>
-            <a href="./index.html" class="active">Slot Machine</a>
-            <a href="./docs.html">Règles & Docs</a>
-        </div>
+      <div class="logo">MINI_JEUX<span>.JS</span></div>
+      <div class="nav-links">
+        <a href="#" id="toggle-credits-modal" class="active"
+          >Rajouté des crédits</a
+        >
+        <a href="./index.html" class="active">Slot Machine</a>
+        <a href="./docs.html">Règles & Docs</a>
+      </div>
     </nav>
 
     <!-- SLOT MACHINE -->
     <main class="machine" id="machine">
+      <!-- Top Neon Sign -->
+      <div class="machine__top-sign">
+        <div class="neon-border"></div>
+        <h1 class="machine__title">
+          <span class="neon-text neon-text--red">S</span
+          ><span class="neon-text neon-text--gold">L</span
+          ><span class="neon-text neon-text--red">O</span
+          ><span class="neon-text neon-text--gold">T</span>
+          <span class="neon-text neon-text--cyan">M</span
+          ><span class="neon-text neon-text--pink">A</span
+          ><span class="neon-text neon-text--cyan">C</span
+          ><span class="neon-text neon-text--pink">H</span
+          ><span class="neon-text neon-text--cyan">I</span
+          ><span class="neon-text neon-text--pink">N</span
+          ><span class="neon-text neon-text--cyan">E</span>
+        </h1>
+        <div class="machine__jackpot-display" id="jackpot-display">
+          <span class="jackpot-label">JACKPOT</span>
+          <span class="jackpot-amount" id="jackpot-amount">1,000</span>
+        </div>
+        <div class="neon-border"></div>
+      </div>
 
-        <!-- Top Neon Sign -->
-        <div class="machine__top-sign">
-            <div class="neon-border"></div>
-            <h1 class="machine__title">
-                <span class="neon-text neon-text--red">S</span><span class="neon-text neon-text--gold">L</span><span
-                    class="neon-text neon-text--red">O</span><span class="neon-text neon-text--gold">T</span>
-                <span class="neon-text neon-text--cyan">M</span><span class="neon-text neon-text--pink">A</span><span
-                    class="neon-text neon-text--cyan">C</span><span class="neon-text neon-text--pink">H</span><span
-                    class="neon-text neon-text--cyan">I</span><span class="neon-text neon-text--pink">N</span><span
-                    class="neon-text neon-text--cyan">E</span>
-            </h1>
-            <div class="machine__jackpot-display" id="jackpot-display">
-                <span class="jackpot-label">JACKPOT</span>
-                <span class="jackpot-amount" id="jackpot-amount">1,000</span>
+      <!-- Chaser Lights (top row) -->
+      <div class="chaser-lights" id="chaser-lights-top">
+        <!-- JS injects lights -->
+      </div>
+
+      <!-- Reels Window -->
+      <div class="reels-frame">
+        <div class="reels-window">
+          <!-- Payline Indicator -->
+          <div class="payline">
+            <div class="payline__arrow payline__arrow--left"></div>
+            <div class="payline__line"></div>
+            <div class="payline__arrow payline__arrow--right"></div>
+          </div>
+
+          <!-- 3 Reels -->
+          <div class="reel-container">
+            <div class="reel" id="reel-1">
+              <!-- JS injects symbols -->
             </div>
-            <div class="neon-border"></div>
+          </div>
+          <div class="reel-separator"></div>
+          <div class="reel-container">
+            <div class="reel" id="reel-2"></div>
+          </div>
+          <div class="reel-separator"></div>
+          <div class="reel-container">
+            <div class="reel" id="reel-3"></div>
+          </div>
         </div>
 
-        <!-- Chaser Lights (top row) -->
-        <div class="chaser-lights" id="chaser-lights-top">
-            <!-- JS injects lights -->
+        <!-- Glass Reflection -->
+        <div class="glass-reflection"></div>
+      </div>
+
+      <!-- Chaser Lights (bottom row) -->
+      <div class="chaser-lights" id="chaser-lights-bottom">
+        <!-- JS injects lights -->
+      </div>
+
+      <!-- Info Panel (Credits / Bet / Win) -->
+      <div class="info-panel">
+        <div class="info-block">
+          <span class="info-label">CRÉDIT</span>
+          <span class="info-value" id="credits">100</span>
+        </div>
+        <div class="info-block info-block--highlight">
+          <span class="info-label">GAIN</span>
+          <span class="info-value info-value--win" id="win-amount">0</span>
+        </div>
+        <div class="info-block">
+          <span class="info-label">MISE</span>
+          <span class="info-value" id="bet-amount">10</span>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <div class="controls__left">
+          <button
+            class="btn-control btn-bet-down"
+            id="btn-bet-down"
+            title="Diminuer la mise"
+          >
+            <span>−</span>
+          </button>
+          <button
+            class="btn-control btn-bet-up"
+            id="btn-bet-up"
+            title="Augmenter la mise"
+          >
+            <span>+</span>
+          </button>
         </div>
 
-        <!-- Reels Window -->
-        <div class="reels-frame">
-            <div class="reels-window">
-                <!-- Payline Indicator -->
-                <div class="payline">
-                    <div class="payline__arrow payline__arrow--left"></div>
-                    <div class="payline__line"></div>
-                    <div class="payline__arrow payline__arrow--right"></div>
-                </div>
+        <button class="btn-spin" id="spin-btn">
+          <div class="btn-spin__inner">
+            <span class="btn-spin__text">SPIN</span>
+          </div>
+          <div class="btn-spin__ring"></div>
+        </button>
 
-                <!-- 3 Reels -->
-                <div class="reel-container">
-                    <div class="reel" id="reel-1">
-                        <!-- JS injects symbols -->
-                    </div>
-                </div>
-                <div class="reel-separator"></div>
-                <div class="reel-container">
-                    <div class="reel" id="reel-2"></div>
-                </div>
-                <div class="reel-separator"></div>
-                <div class="reel-container">
-                    <div class="reel" id="reel-3"></div>
-                </div>
-            </div>
-
-            <!-- Glass Reflection -->
-            <div class="glass-reflection"></div>
+        <div class="controls__right">
+          <button
+            class="btn-control btn-max-bet"
+            id="btn-max-bet"
+            title="Mise max"
+          >
+            MAX
+          </button>
         </div>
+      </div>
 
-        <!-- Chaser Lights (bottom row) -->
-        <div class="chaser-lights" id="chaser-lights-bottom">
-            <!-- JS injects lights -->
-        </div>
-
-        <!-- Info Panel (Credits / Bet / Win) -->
-        <div class="info-panel">
-            <div class="info-block">
-                <span class="info-label">CRÉDIT</span>
-                <span class="info-value" id="credits">100</span>
-            </div>
-            <div class="info-block info-block--highlight">
-                <span class="info-label">GAIN</span>
-                <span class="info-value info-value--win" id="win-amount">0</span>
-            </div>
-            <div class="info-block">
-                <span class="info-label">MISE</span>
-                <span class="info-value" id="bet-amount">10</span>
-            </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="controls">
-            <div class="controls__left">
-                <button class="btn-control btn-bet-down" id="btn-bet-down" title="Diminuer la mise">
-                    <span>−</span>
-                </button>
-                <button class="btn-control btn-bet-up" id="btn-bet-up" title="Augmenter la mise">
-                    <span>+</span>
-                </button>
-            </div>
-
-            <button class="btn-spin" id="spin-btn">
-                <div class="btn-spin__inner">
-                    <span class="btn-spin__text">SPIN</span>
-                </div>
-                <div class="btn-spin__ring"></div>
-            </button>
-
-            <div class="controls__right">
-                <button class="btn-control btn-max-bet" id="btn-max-bet" title="Mise max">
-                    MAX
-                </button>
-            </div>
-        </div>
-
-        <!-- Result Message -->
-        <div class="result-message" id="result-message"></div>
-
+      <!-- Result Message -->
+      <div class="result-message" id="result-message"></div>
     </main>
 
     <div class="credits-modal" id="add-credits-modal">
-        <div class="credits-modal__content">
-            <h2>Ajouter des crédits</h2>
-            <p id="convert">1€ = 32 crédits</p>
-            <input type="number" id="credits-input" placeholder="Entrez le montant à ajouter" value="1">
-            <div class="credits-modal-buttons">
-                <button id="confirm-add-credits" class="btn-control">Oui</button>
-                <button id="cancel-add-credits" class="btn-control">Non</button>
-            </div>
+      <div class="credits-modal__content">
+        <h2>Ajouter des crédits</h2>
+        <p id="convert">1€ = 320 crédits</p>
+        <label id="credits-input-display" for="credits-input">
+          <input
+            type="number"
+            id="credits-input"
+            placeholder="Montant"
+            value="1"
+            min="1"
+            max="1443"
+            required
+          />
+          <span class="validity"></span>
+        </label>
+        <div class="credits-modal-buttons">
+          <input
+            type="submit"
+            id="confirm-add-credits"
+            class="btn-control"
+            value="Oui"
+          />
+          <button id="cancel-add-credits" class="btn-control">Non</button>
         </div>
+      </div>
     </div>
 
     <!-- Pay Table Mini -->
     <div class="paytable-mini" id="paytable-toggle">
-        <span class="paytable-mini__icon">📋</span>
-        <span class="paytable-mini__text">Table de Paiement</span>
+      <span class="paytable-mini__icon">📋</span>
+      <span class="paytable-mini__text">Table de Paiement</span>
     </div>
     <div class="paytable-overlay" id="paytable-overlay">
-        <div class="paytable">
-            <h2>Table de Paiement</h2>
-            <div class="paytable__grid" id="paytable-grid">
-                <!-- JS injects paytable rows -->
-            </div>
-            <button class="paytable__close" id="paytable-close">Fermer</button>
+      <div class="paytable">
+        <h2>Table de Paiement</h2>
+        <div class="paytable__grid" id="paytable-grid">
+          <!-- JS injects paytable rows -->
         </div>
+        <button class="paytable__close" id="paytable-close">Fermer</button>
+      </div>
     </div>
 
     <!-- Sound Effects -->
-    <audio id="spin-sound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"
-        preload="auto"></audio>
-    <audio id="win-sound" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3"
-        preload="auto"></audio>
-    <audio id="lose-sound" src="https://assets.mixkit.co/active_storage/sfx/2004/2004-preview.mp3"
-        preload="auto"></audio>
+    <audio
+      id="spin-sound"
+      src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"
+      preload="auto"
+    ></audio>
+    <audio
+      id="win-sound"
+      src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3"
+      preload="auto"
+    ></audio>
+    <audio
+      id="lose-sound"
+      src="https://assets.mixkit.co/active_storage/sfx/2004/2004-preview.mp3"
+      preload="auto"
+    ></audio>
 
     <script src="./src/main.js"></script>
-</body>
-
+  </body>
 </html>
