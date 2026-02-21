@@ -3,9 +3,7 @@
  * No ES modules, direct file:// compatible
  */
 
-// ============================================================
 // CONFIG & SYMBOLS
-// ============================================================
 
 var SYMBOLS = [{
         id: 'seven',
@@ -64,9 +62,7 @@ var SPIN_DURATION_BASE = 2000; // ms
 var SPIN_DURATION_STEP = 500; // Extra delay per reel
 var NUM_CHASER_LIGHTS = 20;
 
-// ============================================================
 // SLOT ENGINE (Pure logic, no DOM)
-// ============================================================
 
 var SlotEngine = {
     credits: 100,
@@ -125,8 +121,12 @@ var SlotEngine = {
 
         if (rnd < 0.65) {
             // LOSE (65%): 3 different symbols (no cherry)
-            var noCherryPool = pool.filter(function (s) { return s.id !== 'cherry'; });
-            noCherryPool.sort(function () { return 0.5 - Math.random(); });
+            var noCherryPool = pool.filter(function (s) {
+                return s.id !== 'cherry';
+            });
+            noCherryPool.sort(function () {
+                return 0.5 - Math.random();
+            });
             centerSymbols = [noCherryPool[0], noCherryPool[1], noCherryPool[2]];
         } else if (rnd < 0.85) {
             // SMALL WIN (20%): 1 cherry, 2 distinct non-cherries
@@ -140,9 +140,10 @@ var SlotEngine = {
                 return s.id === 'cherry';
             });
             centerSymbols = [noCherryPool[0], noCherryPool[1], cherry];
-            centerSymbols.sort(function () { return 0.5 - Math.random(); });
-        }
-        else if (rnd < 0.96) {
+            centerSymbols.sort(function () {
+                return 0.5 - Math.random();
+            });
+        } else if (rnd < 0.96) {
             // MEDIUM WIN (11%): 2 matches
             var weightedPool = [];
             pool.forEach(function (s) {
@@ -150,15 +151,20 @@ var SlotEngine = {
                 for (var i = 0; i < weight; i++) weightedPool.push(s);
             });
             var matchSym = weightedPool[Math.floor(Math.random() * weightedPool.length)];
-            var distinctPool = pool.filter(function (s) { return s.id !== matchSym.id && s.id !== 'cherry'; });
+            var distinctPool = pool.filter(function (s) {
+                return s.id !== matchSym.id && s.id !== 'cherry';
+            });
             if (distinctPool.length === 0) distinctPool = pool;
             var otherSym = distinctPool[Math.floor(Math.random() * distinctPool.length)];
             centerSymbols = [matchSym, matchSym, otherSym];
-            centerSymbols.sort(function () { return 0.5 - Math.random(); });
-        }
-        else if (rnd < 0.995) {
+            centerSymbols.sort(function () {
+                return 0.5 - Math.random();
+            });
+        } else if (rnd < 0.995) {
             // BIG WIN (3.5%): 3 matches of anything but 'seven'
-            var noJackpotPool = pool.filter(function (s) { return s.id !== 'seven'; });
+            var noJackpotPool = pool.filter(function (s) {
+                return s.id !== 'seven';
+            });
             var weightedPool = [];
             noJackpotPool.forEach(function (s) {
                 var weight = Math.max(1, Math.round(30 / s.multiplier));
@@ -166,10 +172,11 @@ var SlotEngine = {
             });
             var matchSym = weightedPool[Math.floor(Math.random() * weightedPool.length)];
             centerSymbols = [matchSym, matchSym, matchSym];
-        }
-        else {
+        } else {
             // JACKPOT (0.5%): 3 Sevens
-            var seven = pool.find(function (s) { return s.id === 'seven'; });
+            var seven = pool.find(function (s) {
+                return s.id === 'seven';
+            });
             centerSymbols = [seven, seven, seven];
         }
 
@@ -187,26 +194,44 @@ var SlotEngine = {
     },
 
     calculatePayout: function (symbols) {
-        var a = symbols[0], b = symbols[1], c = symbols[2];
+        var a = symbols[0],
+            b = symbols[1],
+            c = symbols[2];
 
         // 3 of a kind
         if (a.id === b.id && b.id === c.id) {
-            return { type: 'jackpot', multiplier: a.multiplier, amount: this.bet * a.multiplier };
+            return {
+                type: 'jackpot',
+                multiplier: a.multiplier,
+                amount: this.bet * a.multiplier
+            };
         }
 
         // 2 of a kind
         if (a.id === b.id || b.id === c.id || a.id === c.id) {
             var matchSymbol = (a.id === b.id) ? a : c;
             var mult = Math.max(2, Math.round(matchSymbol.multiplier / 5));
-            return { type: 'win', multiplier: mult, amount: this.bet * mult };
+            return {
+                type: 'win',
+                multiplier: mult,
+                amount: this.bet * mult
+            };
         }
 
         // Any cherry = small win
         if (a.id === 'cherry' || b.id === 'cherry' || c.id === 'cherry') {
-            return { type: 'small', multiplier: 1, amount: this.bet };
+            return {
+                type: 'small',
+                multiplier: 1,
+                amount: this.bet
+            };
         }
 
-        return { type: 'lose', multiplier: 0, amount: 0 };
+        return {
+            type: 'lose',
+            multiplier: 0,
+            amount: 0
+        };
     },
 
     finishSpin: function (payout) {
@@ -227,13 +252,15 @@ var SlotEngine = {
     }
 };
 
-// ============================================================
 // SLOT UI (DOM, Animations, Sound)
-// ============================================================
 
 var SlotUI = {
     reelEls: [],
-    reelStrips: [[], [], []],
+    reelStrips: [
+        [],
+        [],
+        []
+    ],
     history: [],
 
     init: function () {
@@ -261,7 +288,9 @@ var SlotUI = {
 
         // Responsive symbol height
         this.updateSymbolHeight();
-        window.addEventListener('resize', function () { self.updateSymbolHeight(); });
+        window.addEventListener('resize', function () {
+            self.updateSymbolHeight();
+        });
 
         this.buildChaserLights();
         this.buildInitialReels();
@@ -469,7 +498,9 @@ var SlotUI = {
         var payout = result.payout;
         var now = new Date();
         var time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0');
-        var combo = result.centerSymbols.map(function (s) { return s.emoji; }).join(' ');
+        var combo = result.centerSymbols.map(function (s) {
+            return s.emoji;
+        }).join(' ');
         var entry = {
             time: time,
             bet: payout.type === 'lose' ? SlotEngine.bet : (payout.amount / payout.multiplier),
@@ -658,7 +689,7 @@ var SlotUI = {
         el.currentTime = 0;
         el.loop = !!loop;
         el.volume = 0.4;
-        el.play().catch(function () { });
+        el.play().catch(function () {});
     },
     stopSound: function (el) {
         if (!el) return;
@@ -667,9 +698,53 @@ var SlotUI = {
     }
 };
 
-// ============================================================
+// SHOW CREDITS MODAL
+
+document.getElementById('toggle-credits-modal').addEventListener('click', () => {
+    document.getElementById('add-credits-modal').style.display = 'flex';
+});
+
+// CLOSE CREDITS MODAL
+document.getElementById('cancel-add-credits').addEventListener('click', () => {
+    document.getElementById('add-credits-modal').style.display = 'none';
+});
+
+// MONEY CHANGE
+
+document.getElementById('credits-input').addEventListener("keypress", (e) => {
+    if (["e", "E", "+", "-", ".", ","].includes(e.key)) e.preventDefault();
+    if (e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById('confirm-add-credits').click();
+    }
+});
+document.getElementById('credits-input').addEventListener("input", (e) => {
+    if (e.target.value > 0 && e.target.value <= 1443) document.getElementById('convert').innerHTML = `${parseInt(e.target.value)}€ = ${parseInt(e.target.value) * 320} crédits`;
+    else return;
+});
+
+// ADD CREDITS
+
+/**
+ * 
+ * @param {Number} amount 
+ * @returns {void}
+ */
+
+function addCredits(amount) {
+    const value = parseInt(amount);
+    if (isNaN(value) || value <= 0 || value > 1443) {
+        alert('Veuillez entrer un montant valide entre 1 et 1443 euros.');
+        return;
+    }
+    SlotEngine.credits += value * 320;
+    SlotUI.updateDisplay();
+    document.getElementById('add-credits-modal').style.display = 'none';
+}
+
+document.getElementById('confirm-add-credits').addEventListener('click', () => addCredits(document.getElementById('credits-input').value));
+
 // BOOTSTRAP
-// ============================================================
 
 document.addEventListener('DOMContentLoaded', function () {
     SlotUI.init();

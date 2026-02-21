@@ -1,216 +1,242 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mini-Jeux JS | Slot Machine</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="./src/style.css" rel="stylesheet">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;900&display=swap"
-    rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini-Jeux JS | Slot Machine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="./src/style.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;900&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
 
-  <!-- Ambient Glow -->
-  <div class="ambient-glow ambient-glow--left"></div>
-  <div class="ambient-glow ambient-glow--right"></div>
+    <!-- Ambient Glow -->
+    <div class="ambient-glow ambient-glow--left"></div>
+    <div class="ambient-glow ambient-glow--right"></div>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="logo">MINI_JEUX<span>.JS</span></div>
-    <div class="nav-links">
-      <a href="./index.html" class="active">Slot Machine</a>
-      <a href="./docs.html">Règles & Docs</a>
-    </div>
-  </nav>
-
-  <!-- Main Game Layout: History Sidebar + Machine -->
-  <div class="flex items-start justify-center gap-6 px-4 py-2 w-full max-w-7xl mx-auto" id="game-layout">
-
-    <!-- History Sidebar (hidden by default, shown on toggle) -->
-    <aside class="hidden w-80 flex-shrink-0 rounded-2xl border border-white/10 overflow-hidden self-stretch"
-      id="history-panel"
-      style="background: linear-gradient(180deg, rgba(13,6,24,0.95), rgba(26,10,46,0.9)); max-height: 90vh;">
-      <div class="flex items-center justify-between px-4 py-3 border-b border-white/10">
-        <h3 class="font-['Orbitron'] text-xs font-bold tracking-widest uppercase" style="color: var(--neon-gold);">📜
-          Historique</h3>
-        <button
-          class="w-7 h-7 rounded-full border border-white/20 text-white/40 flex items-center justify-center text-sm hover:border-pink-500 hover:text-pink-500 transition-all cursor-pointer bg-transparent"
-          id="history-close">✕</button>
-      </div>
-      <div class="overflow-y-auto p-0" id="history-body"
-        style="max-height: calc(90vh - 50px); scrollbar-width: thin; scrollbar-color: #00e5ff rgba(0,0,0,0.2);">
-        <table class="history-table w-full border-collapse text-xs font-['Inter']">
-          <thead class="sticky top-0 z-10">
-            <tr>
-              <th
-                class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
-                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">Heure</th>
-              <th
-                class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
-                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">Mise</th>
-              <th
-                class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
-                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">Résultat</th>
-              <th
-                class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
-                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">Solde</th>
-              <th
-                class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
-                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">Combo</th>
-            </tr>
-          </thead>
-          <tbody id="history-tbody">
-            <!-- JS injects history rows -->
-          </tbody>
-        </table>
-        <p class="text-center text-white/30 italic text-xs py-6" id="history-empty">Aucune partie jouée</p>
-      </div>
-    </aside>
-
-    <!-- SLOT MACHINE -->
-    <main class="machine" id="machine">
-
-      <!-- Top Neon Sign -->
-      <div class="machine__top-sign">
-        <div class="neon-border"></div>
-        <h1 class="machine__title">
-          <span class="neon-text neon-text--red">S</span><span class="neon-text neon-text--gold">L</span><span
-            class="neon-text neon-text--red">O</span><span class="neon-text neon-text--gold">T</span>
-          <span class="neon-text neon-text--cyan">M</span><span class="neon-text neon-text--pink">A</span><span
-            class="neon-text neon-text--cyan">C</span><span class="neon-text neon-text--pink">H</span><span
-            class="neon-text neon-text--cyan">I</span><span class="neon-text neon-text--pink">N</span><span
-            class="neon-text neon-text--cyan">E</span>
-        </h1>
-        <div class="machine__jackpot-display" id="jackpot-display">
-          <span class="jackpot-label">JACKPOT</span>
-          <span class="jackpot-amount" id="jackpot-amount">1,000</span>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">MINI_JEUX<span>.JS</span></div>
+        <div class="nav-links">
+            <a href="#" id="toggle-credits-modal" class="active">Rajouté des crédits</a>
+            <a href="./index.html" class="active">Slot Machine</a>
+            <a href="./docs.html">Règles & Docs</a>
         </div>
-        <div class="neon-border"></div>
-      </div>
+    </nav>
 
-      <!-- Chaser Lights (top row) -->
-      <div class="chaser-lights" id="chaser-lights-top">
-        <!-- JS injects lights -->
-      </div>
+    <!-- Main Game Layout: History Sidebar + Machine -->
+    <div class="flex items-start justify-center gap-6 px-4 py-2 w-full max-w-7xl mx-auto" id="game-layout">
 
-      <!-- Reels Window -->
-      <div class="reels-frame">
-        <div class="reels-window">
-          <!-- Payline Indicator -->
-          <div class="payline">
-            <div class="payline__arrow payline__arrow--left"></div>
-            <div class="payline__line"></div>
-            <div class="payline__arrow payline__arrow--right"></div>
-          </div>
-
-          <!-- 3 Reels -->
-          <div class="reel-container">
-            <div class="reel" id="reel-1">
-              <!-- JS injects symbols -->
+        <!-- History Sidebar (hidden by default, shown on toggle) -->
+        <aside class="hidden w-80 flex-shrink-0 rounded-2xl border border-white/10 overflow-hidden self-stretch"
+            id="history-panel"
+            style="background: linear-gradient(180deg, rgba(13,6,24,0.95), rgba(26,10,46,0.9)); max-height: 90vh;">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-white/10">
+                <h3 class="font-['Orbitron'] text-xs font-bold tracking-widest uppercase"
+                    style="color: var(--neon-gold);">📜
+                    Historique</h3>
+                <button
+                    class="w-7 h-7 rounded-full border border-white/20 text-white/40 flex items-center justify-center text-sm hover:border-pink-500 hover:text-pink-500 transition-all cursor-pointer bg-transparent"
+                    id="history-close">✕</button>
             </div>
-          </div>
-          <div class="reel-separator"></div>
-          <div class="reel-container">
-            <div class="reel" id="reel-2"></div>
-          </div>
-          <div class="reel-separator"></div>
-          <div class="reel-container">
-            <div class="reel" id="reel-3"></div>
-          </div>
+            <div class="overflow-y-auto p-0" id="history-body"
+                style="max-height: calc(90vh - 50px); scrollbar-width: thin; scrollbar-color: #00e5ff rgba(0,0,0,0.2);">
+                <table class="history-table w-full border-collapse text-xs font-['Inter']">
+                    <thead class="sticky top-0 z-10">
+                        <tr>
+                            <th class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
+                                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">
+                                Heure</th>
+                            <th class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
+                                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">
+                                Mise</th>
+                            <th class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
+                                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">
+                                Résultat</th>
+                            <th class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
+                                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">
+                                Solde</th>
+                            <th class="px-2 py-2 text-center uppercase tracking-widest text-[0.55rem] font-bold border-b border-white/10"
+                                style="background: rgba(26,10,46,0.95); color: var(--text-dim); font-family: 'Orbitron';">
+                                Combo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody">
+                        <!-- JS injects history rows -->
+                    </tbody>
+                </table>
+                <p class="text-center text-white/30 italic text-xs py-6" id="history-empty">Aucune partie jouée</p>
+            </div>
+        </aside>
+
+        <!-- SLOT MACHINE -->
+        <main class="machine" id="machine">
+            <!-- Top Neon Sign -->
+            <div class="machine__top-sign">
+                <div class="neon-border"></div>
+                <h1 class="machine__title">
+                    <span class="neon-text neon-text--red">S</span>
+                    <span class="neon-text neon-text--gold">L</span>
+                    <span class="neon-text neon-text--red">O</span>
+                    <span class="neon-text neon-text--gold">T</span>
+                    <span class="neon-text neon-text--cyan">M</span>
+                    <span class="neon-text neon-text--pink">A</span>
+                    <span class="neon-text neon-text--cyan">C</span>
+                    <span class="neon-text neon-text--pink">H</span>
+                    <span class="neon-text neon-text--cyan">I</span>
+                    <span class="neon-text neon-text--pink">N</span>
+                    <span class="neon-text neon-text--cyan">E</span>
+                </h1>
+                <div class="machine__jackpot-display" id="jackpot-display">
+                    <span class="jackpot-label">JACKPOT</span>
+                    <span class="jackpot-amount" id="jackpot-amount">1,000</span>
+                </div>
+                <div class="neon-border"></div>
+            </div>
+
+            <!-- Chaser Lights (top row) -->
+            <div class="chaser-lights" id="chaser-lights-top">
+                <!-- JS injects lights -->
+            </div>
+
+            <!-- Reels Window -->
+            <div class="reels-frame">
+                <div class="reels-window">
+                    <!-- Payline Indicator -->
+                    <div class="payline">
+                        <div class="payline__arrow payline__arrow--left"></div>
+                        <div class="payline__line"></div>
+                        <div class="payline__arrow payline__arrow--right"></div>
+                    </div>
+
+                    <!-- 3 Reels -->
+                    <div class="reel-container">
+                        <div class="reel" id="reel-1">
+                            <!-- JS injects symbols -->
+                        </div>
+                    </div>
+                    <div class="reel-separator"></div>
+                    <div class="reel-container">
+                        <div class="reel" id="reel-2"></div>
+                    </div>
+                    <div class="reel-separator"></div>
+                    <div class="reel-container">
+                        <div class="reel" id="reel-3"></div>
+                    </div>
+                </div>
+
+                <!-- Glass Reflection -->
+                <div class="glass-reflection"></div>
+            </div>
+
+            <!-- Chaser Lights (bottom row) -->
+            <div class="chaser-lights" id="chaser-lights-bottom">
+                <!-- JS injects lights -->
+            </div>
+
+            <!-- Info Panel (Credits / Bet / Win) -->
+            <div class="info-panel">
+                <div class="info-block">
+                    <span class="info-label">CRÉDIT</span>
+                    <span class="info-value" id="credits">100</span>
+                </div>
+                <div class="info-block info-block--highlight">
+                    <span class="info-label">GAIN</span>
+                    <span class="info-value info-value--win" id="win-amount">0</span>
+                </div>
+                <div class="info-block">
+                    <span class="info-label">MISE</span>
+                    <span class="info-value" id="bet-amount">10</span>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <div class="controls__left">
+                    <button class="btn-control btn-bet-down" id="btn-bet-down" title="Diminuer la mise">
+                        <span>-</span>
+                    </button>
+                    <button class="btn-control btn-bet-up" id="btn-bet-up" title="Augmenter la mise">
+                        <span>+</span>
+                    </button>
+                </div>
+
+                <button class="btn-spin" id="spin-btn">
+                    <div class="btn-spin__inner">
+                        <span class="btn-spin__text">SPIN</span>
+                    </div>
+                    <div class="btn-spin__ring"></div>
+                </button>
+
+                <div class="controls__right">
+                    <button class="btn-control btn-max-bet" id="btn-max-bet" title="Mise max">
+                        MAX
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Message -->
+            <div class="result-message" id="result-message"></div>
+        </main>
+
+        <div class="credits-modal" id="add-credits-modal">
+            <div class="credits-modal__content">
+                <h2>Ajouter des crédits</h2>
+                <p id="convert">1€ = 320 crédits</p>
+                <label id="credits-input-display" for="credits-input">
+                    <input type="number" id="credits-input" placeholder="Montant" value="1" min="1" max="1443"
+                        required />
+                    <span class="validity"></span>
+                </label>
+                <div class="credits-modal-buttons">
+                    <input type="submit" id="confirm-add-credits" class="btn-control" value="Oui" />
+                    <button id="cancel-add-credits" class="btn-control">Non</button>
+                </div>
+            </div>
+
+            <!-- Result Message -->
+            <div class="result-message" id="result-message"></div>
+
+            <!-- History Toggle Button -->
+            <div class="flex items-center gap-2 mx-6 mt-3 mb-1 px-4 py-2 rounded-xl border border-white/10 cursor-pointer transition-all hover:border-cyan-400 hover:shadow-[0_0_12px_rgba(0,229,255,0.2)]"
+                id="history-toggle" style="background: linear-gradient(145deg, rgba(26,10,46,0.8), rgba(13,6,24,0.9));">
+                <span class="text-sm">📜</span>
+                <span class="font-['Orbitron'] text-[0.65rem] font-bold tracking-widest uppercase"
+                    style="color: var(--neon-cyan);">
+                    Historique
+                </span>
+            </div>
+
+            </main>
         </div>
 
-        <!-- Glass Reflection -->
-        <div class="glass-reflection"></div>
-      </div>
-
-      <!-- Chaser Lights (bottom row) -->
-      <div class="chaser-lights" id="chaser-lights-bottom">
-        <!-- JS injects lights -->
-      </div>
-
-      <!-- Info Panel (Credits / Bet / Win) -->
-      <div class="info-panel">
-        <div class="info-block">
-          <span class="info-label">CRÉDIT</span>
-          <span class="info-value" id="credits">100</span>
+        <!-- Pay Table Mini -->
+        <div class="paytable-mini" id="paytable-toggle">
+            <span class="paytable-mini__icon">📋</span>
+            <span class="paytable-mini__text">Table de Paiement</span>
         </div>
-        <div class="info-block info-block--highlight">
-          <span class="info-label">GAIN</span>
-          <span class="info-value info-value--win" id="win-amount">0</span>
-        </div>
-        <div class="info-block">
-          <span class="info-label">MISE</span>
-          <span class="info-value" id="bet-amount">10</span>
-        </div>
-      </div>
+        <div class="paytable-overlay" id="paytable-overlay">
+            <div class="paytable">
+                <h2>Table de Paiement</h2>
+                <div class="paytable__grid" id="paytable-grid">
+                    <!-- JS injects paytable rows -->
+                </div>
+                <button class="paytable__close" id="paytable-close">Fermer</button>
+            </div>
 
-      <!-- Controls -->
-      <div class="controls">
-        <div class="controls__left">
-          <button class="btn-control btn-bet-down" id="btn-bet-down" title="Diminuer la mise">
-            <span>−</span>
-          </button>
-          <button class="btn-control btn-bet-up" id="btn-bet-up" title="Augmenter la mise">
-            <span>+</span>
-          </button>
-        </div>
+            <!-- Sound Effects -->
+            <audio id="spin-sound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"
+                preload="auto"></audio>
+            <audio id="win-sound" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3"
+                preload="auto"></audio>
+            <audio id="lose-sound" src="https://assets.mixkit.co/active_storage/sfx/2004/2004-preview.mp3"
+                preload="auto"></audio>
 
-        <button class="btn-spin" id="spin-btn">
-          <div class="btn-spin__inner">
-            <span class="btn-spin__text">SPIN</span>
-          </div>
-          <div class="btn-spin__ring"></div>
-        </button>
-
-        <div class="controls__right">
-          <button class="btn-control btn-max-bet" id="btn-max-bet" title="Mise max">
-            MAX
-          </button>
-        </div>
-      </div>
-
-      <!-- Result Message -->
-      <div class="result-message" id="result-message"></div>
-
-      <!-- History Toggle Button -->
-      <div
-        class="flex items-center gap-2 mx-6 mt-3 mb-1 px-4 py-2 rounded-xl border border-white/10 cursor-pointer transition-all hover:border-cyan-400 hover:shadow-[0_0_12px_rgba(0,229,255,0.2)]"
-        id="history-toggle" style="background: linear-gradient(145deg, rgba(26,10,46,0.8), rgba(13,6,24,0.9));">
-        <span class="text-sm">📜</span>
-        <span class="font-['Orbitron'] text-[0.65rem] font-bold tracking-widest uppercase"
-          style="color: var(--neon-cyan);">
-          Historique
-        </span>
-      </div>
-
-    </main>
-  </div>
-
-  <!-- Pay Table Mini -->
-  <div class="paytable-mini" id="paytable-toggle">
-    <span class="paytable-mini__icon">📋</span>
-    <span class="paytable-mini__text">Table de Paiement</span>
-  </div>
-  <div class="paytable-overlay" id="paytable-overlay">
-    <div class="paytable">
-      <h2>Table de Paiement</h2>
-      <div class="paytable__grid" id="paytable-grid">
-        <!-- JS injects paytable rows -->
-      </div>
-      <button class="paytable__close" id="paytable-close">Fermer</button>
-    </div>
-  </div>
-
-  <!-- Sound Effects -->
-  <audio id="spin-sound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
-  <audio id="win-sound" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
-  <audio id="lose-sound" src="https://assets.mixkit.co/active_storage/sfx/2004/2004-preview.mp3" preload="auto"></audio>
-
-  <script src="./src/main.js"></script>
+            <script src="./src/main.js"></script>
 </body>
 
 </html>

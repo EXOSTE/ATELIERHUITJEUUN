@@ -1,7 +1,0 @@
-{
-    "css.format.enable": false,
-    "[css]": {
-        "editor.formatOnSave": false,
-        "editor.defaultFormatter": null
-    }
-}
