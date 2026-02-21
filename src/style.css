@@ -403,8 +403,9 @@ body {
     padding: 1.5rem;
 }
 
-#credits-input {
-    display: block;
+#credits-input-display {
+    display: flex;
+    align-items: center;
     width: 100%;
     max-width: 15rem;
     margin: 0.75rem auto 0;
@@ -420,12 +421,35 @@ body {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+#credits-input {
+    display: block;
+    width: 100%;
+    max-width: 15rem;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--text-main);
+    background: none;
+    border: 0;
+    text-align: center;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
 #credits-input::placeholder {
     color: rgba(255, 255, 255, 0.4);
 }
 
 #credits-input:focus {
     outline: none;
+}
+
+/* Effet placeholder sur le conteneur quand l'input affiche le placeholder */
+#credits-input-display:has(#credits-input:placeholder-shown) {
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Effet focus sur le conteneur quand l'input est focus */
+#credits-input-display:has(#credits-input:focus) {
     border-color: var(--neon-cyan);
     box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
 }
@@ -434,6 +458,18 @@ body {
     display: flex;
     margin-top: 1rem;
     justify-content: space-around;
+}
+
+#credits-input:invalid + span::after {
+  content: "✖";
+  padding-left: 5px;
+  margin-bottom: 10px;
+}
+
+#credits-input:valid + span::after {
+  content: "✓";
+  padding-left: 5px;
+  margin-bottom: 10px;
 }
 
 /* --- Info Panel --- */
