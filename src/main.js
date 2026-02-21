@@ -617,6 +617,15 @@ document.getElementById('toggle-credits-modal').addEventListener('click', () => 
 document.getElementById('cancel-add-credits').addEventListener('click', () => {
     document.getElementById('add-credits-modal').style.display = 'none';
 });
+
+// MONEY CHANGE
+
+document.getElementById('credits-input').addEventListener("keypress", (e) => {
+    if (["e", "E", "+", "-", ".", ","].includes(e.key)) e.preventDefault();
+});
+document.getElementById('credits-input').addEventListener("input", (e) => {
+    if (e.target.value > 0 && e.target.value <= 1443) document.getElementById('convert').innerHTML = `${parseInt(e.target.value)}€ = ${parseInt(e.target.value) * 320} crédits`;
+    else return;
 });
 
 // BOOTSTRAP
