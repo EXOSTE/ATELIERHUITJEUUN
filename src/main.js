@@ -607,12 +607,16 @@ var SlotUI = {
     }
 };
 
-// ADDCREDITS
+// SHOW CREDITS MODAL
 
-document.getElementById('toggle-credits-modal').addEventListener('click', function () {
+document.getElementById('toggle-credits-modal').addEventListener('click', () => {
     document.getElementById('add-credits-modal').style.display = 'flex';
-    // SlotEngine.addCredits(100);
-    // self.updateDisplay();
+});
+
+// CLOSE CREDITS MODAL
+document.getElementById('cancel-add-credits').addEventListener('click', () => {
+    document.getElementById('add-credits-modal').style.display = 'none';
+});
 });
 
 // BOOTSTRAP
