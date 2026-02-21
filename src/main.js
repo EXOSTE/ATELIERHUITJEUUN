@@ -3,9 +3,7 @@
  * No ES modules, direct file:// compatible
  */
 
-// ============================================================
 // CONFIG & SYMBOLS
-// ============================================================
 
 var SYMBOLS = [{
         id: 'seven',
@@ -64,9 +62,7 @@ var SPIN_DURATION_BASE = 2000; // ms
 var SPIN_DURATION_STEP = 500; // Extra delay per reel
 var NUM_CHASER_LIGHTS = 20;
 
-// ============================================================
 // SLOT ENGINE (Pure logic, no DOM)
-// ============================================================
 
 var SlotEngine = {
     credits: 100,
@@ -256,9 +252,7 @@ var SlotEngine = {
     }
 };
 
-// ============================================================
 // SLOT UI (DOM, Animations, Sound)
-// ============================================================
 
 var SlotUI = {
     reelEls: [],
@@ -509,12 +503,6 @@ var SlotUI = {
             self.updateDisplay();
         });
 
-        document.getElementById('toggle-credits-modal').addEventListener('click', function () {
-            document.getElementById('add-credits-modal').classList.add('open');
-            // SlotEngine.addCredits(100);
-            // self.updateDisplay();
-        });
-
         // Paytable
         document.getElementById('paytable-toggle').addEventListener('click', function () {
             document.getElementById('paytable-overlay').classList.add('open');
@@ -619,9 +607,15 @@ var SlotUI = {
     }
 };
 
-// ============================================================
+// ADDCREDITS
+
+document.getElementById('toggle-credits-modal').addEventListener('click', function () {
+    document.getElementById('add-credits-modal').style.display = 'flex';
+    // SlotEngine.addCredits(100);
+    // self.updateDisplay();
+});
+
 // BOOTSTRAP
-// ============================================================
 
 document.addEventListener('DOMContentLoaded', function () {
     SlotUI.init();
