@@ -622,11 +622,36 @@ document.getElementById('cancel-add-credits').addEventListener('click', () => {
 
 document.getElementById('credits-input').addEventListener("keypress", (e) => {
     if (["e", "E", "+", "-", ".", ","].includes(e.key)) e.preventDefault();
+    if (e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById('confirm-add-credits').click();
+    }
 });
 document.getElementById('credits-input').addEventListener("input", (e) => {
     if (e.target.value > 0 && e.target.value <= 1443) document.getElementById('convert').innerHTML = `${parseInt(e.target.value)}€ = ${parseInt(e.target.value) * 320} crédits`;
     else return;
 });
+
+// ADD CREDITS
+
+/**
+ * 
+ * @param {Number} amount 
+ * @returns {void}
+ */
+
+function addCredits(amount) {
+    const value = parseInt(amount);
+    if (isNaN(value) || value <= 0 || value > 1443) {
+        alert('Veuillez entrer un montant valide entre 1 et 1443 euros.');
+        return;
+    }
+    SlotEngine.credits += value * 320;
+    SlotUI.updateDisplay();
+    document.getElementById('add-credits-modal').style.display = 'none';
+}
+
+document.getElementById('confirm-add-credits').addEventListener('click', () => addCredits(document.getElementById('credits-input').value));
 
 // BOOTSTRAP
 
