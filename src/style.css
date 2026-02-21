@@ -1,5 +1,4 @@
-/* SLOT MACHINE - Casino Arcade Aesthetic */
-
+/* === SLOT MACHINE === */
 /* --- Variables --- */
 :root {
     --bg-dark: #0a0612;
@@ -904,44 +903,50 @@ body {
     border-color: rgba(255, 255, 255, 0.05);
 }
 
-/* RESPONSIVE */
-@media (max-width: 520px) {
-    .machine {
-        max-width: 100%;
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-    }
+/* Layout & History */
+.game-layout { display: flex; align-items: flex-start; justify-content: center; gap: 1.5rem; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+.history-sidebar { display: none; width: 320px; flex-shrink: 0; border-radius: 16px; border: 1px solid var(--metal-border); overflow: hidden; background: linear-gradient(180deg, rgba(13,6,24,.95), rgba(26,10,46,.9)); max-height: 85vh; align-self: stretch; }
+.history-sidebar.show { display: block; }
+.history-sidebar__header { display: flex; justify-content: space-between; align-items: center; padding: .75rem 1rem; border-bottom: 1px solid var(--metal-border); }
+.history-sidebar__header h3 { font: 700 .7rem var(--font-display); letter-spacing: .1em; color: var(--neon-gold); margin: 0; text-transform: uppercase; }
+.history-sidebar__close { background: none; border: 1px solid var(--metal-border); color: var(--text-dim); font-size: 1rem; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.history-sidebar__close:hover { border-color: var(--neon-pink); color: var(--neon-pink); }
+.history-sidebar__body { max-height: calc(85vh - 50px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--neon-cyan) rgba(0,0,0,.2); }
+.history-table { width: 100%; border-collapse: collapse; font: .75rem var(--font-body); }
+.history-table thead { position: sticky; top: 0; z-index: 2; }
+.history-table th { background: rgba(26,10,46,.95); font: 700 .55rem var(--font-display); letter-spacing: .1em; color: var(--text-dim); text-transform: uppercase; padding: .5rem .4rem; text-align: center; border-bottom: 1px solid var(--metal-border); }
+.history-table td { padding: .45rem .4rem; text-align: center; color: var(--text-main); border-bottom: 1px solid rgba(255,255,255,.04); white-space: nowrap; }
+.history-table tr:hover td { background: rgba(0,229,255,.05); }
+.history-win { color: var(--neon-gold); font-weight: 700; }
+.history-lose { color: var(--neon-pink); font-weight: 700; }
+.history-jackpot { color: #39ff14; font-weight: 900; text-shadow: 0 0 6px rgba(57,255,20,.4); }
+.history-empty { text-align: center; padding: 1.5rem; color: var(--text-dim); font-style: italic; font-size: .75rem; }
+.history-toggle { display: flex; align-items: center; gap: .5rem; margin: .75rem 1.5rem .5rem; padding: .5rem 1rem; background: linear-gradient(145deg, rgba(26,10,46,.8), rgba(13,6,24,.9)); border: 1px solid var(--metal-border); border-radius: 10px; font: 700 .65rem var(--font-display); letter-spacing: .1em; color: var(--neon-cyan); cursor: pointer; transition: all .2s; text-transform: uppercase; }
+.history-toggle:hover { border-color: var(--neon-cyan); box-shadow: 0 0 12px rgba(0,229,255,.2); }
 
-    .machine__title {
-        font-size: 1.5rem;
-    }
+/* Layout & History */
+.game-layout { display: flex; align-items: flex-start; justify-content: center; gap: 1.5rem; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+.history-sidebar { display: none; width: 320px; flex-shrink: 0; border-radius: 16px; border: 1px solid var(--metal-border); overflow: hidden; background: linear-gradient(180deg, rgba(13,6,24,.95), rgba(26,10,46,.9)); max-height: 85vh; align-self: stretch; }
+.history-sidebar.show { display: block; }
+.history-sidebar__header { display: flex; justify-content: space-between; align-items: center; padding: .75rem 1rem; border-bottom: 1px solid var(--metal-border); }
+.history-sidebar__header h3 { font: 700 .7rem var(--font-display); letter-spacing: .1em; color: var(--neon-gold); margin: 0; text-transform: uppercase; }
+.history-sidebar__close { background: none; border: 1px solid var(--metal-border); color: var(--text-dim); font-size: 1rem; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.history-sidebar__close:hover { border-color: var(--neon-pink); color: var(--neon-pink); }
+.history-sidebar__body { max-height: calc(85vh - 50px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--neon-cyan) rgba(0,0,0,.2); }
+.history-table { width: 100%; border-collapse: collapse; font: .75rem var(--font-body); }
+.history-table thead { position: sticky; top: 0; z-index: 2; }
+.history-table th { background: rgba(26,10,46,.95); font: 700 .55rem var(--font-display); letter-spacing: .1em; color: var(--text-dim); text-transform: uppercase; padding: .5rem .4rem; text-align: center; border-bottom: 1px solid var(--metal-border); }
+.history-table td { padding: .45rem .4rem; text-align: center; color: var(--text-main); border-bottom: 1px solid rgba(255,255,255,.04); white-space: nowrap; }
+.history-table tr:hover td { background: rgba(0,229,255,.05); }
+.history-win { color: var(--neon-gold); font-weight: 700; }
+.history-lose { color: var(--neon-pink); font-weight: 700; }
+.history-jackpot { color: #39ff14; font-weight: 900; text-shadow: 0 0 6px rgba(57,255,20,.4); }
+.history-empty { text-align: center; padding: 1.5rem; color: var(--text-dim); font-style: italic; font-size: .75rem; }
+.history-toggle { display: flex; align-items: center; gap: .5rem; margin: .75rem 1.5rem .5rem; padding: .5rem 1rem; background: linear-gradient(145deg, rgba(26,10,46,.8), rgba(13,6,24,.9)); border: 1px solid var(--metal-border); border-radius: 10px; font: 700 .65rem var(--font-display); letter-spacing: .1em; color: var(--neon-cyan); cursor: pointer; transition: all .2s; text-transform: uppercase; }
+.history-toggle:hover { border-color: var(--neon-cyan); box-shadow: 0 0 12px rgba(0,229,255,.2); }
 
-    .reels-frame {
-        margin: 0 0.5rem;
-        border-radius: 10px;
-    }
-
-    .btn-spin {
-        width: 72px;
-        height: 72px;
-    }
-
-    .btn-spin__text {
-        font-size: 0.85rem;
-    }
-
-    .reel-symbol {
-        font-size: 2.2rem;
-        height: 60px;
-    }
-
-    .reels-window {
-        height: 180px;
-    }
-
-    .controls {
-        gap: 0.5rem;
-        padding: 0.75rem 1rem 0.5rem;
-    }
-}
+/* Responsive */
+@media(max-width:768px) { .ambient-glow{width:200px;height:300px;filter:blur(80px)} }
+@media(max-width:520px) { .machine{max-width:100%;border-radius:0;border-left:none;border-right:none;padding-bottom:1rem;box-shadow:none} .navbar{padding:.75rem 1rem} .logo{font-size:1rem} .nav-links{gap:1rem} .nav-links a{font-size:.75rem} .machine__title{font-size:1.5rem} .reels-frame{margin:0 .5rem;border-radius:10px} .reels-window{height:180px} .reel-symbol{font-size:2.2rem;height:60px} .payline{height:60px} .controls{padding:.75rem .5rem .5rem} .controls__left,.controls__right{gap:.5rem} .btn-control{width:40px;height:40px;font-size:1.1rem} .btn-max-bet{padding:0 10px;font-size:.6rem} .btn-spin{width:76px;height:76px} .btn-spin__text{font-size:.85rem} .info-panel{margin:0 .5rem;padding:.5rem} .info-value{font-size:1.1rem} }
+@media(max-width:380px) { .nav-links{display:none} .logo{margin:0 auto;text-align:center;width:100%} .machine__title{font-size:1.25rem} .reels-window{height:150px} .reel-symbol{font-size:1.8rem;height:50px} .payline{height:50px} .info-value{font-size:.95rem} .btn-spin{width:68px;height:68px} }
+@media(max-height:700px) { body{justify-content:flex-start} .navbar{position:relative;padding:.5rem 1rem} .machine{margin-top:0;border-radius:0} .machine__top-sign{padding:.5rem 1rem .25rem} }
