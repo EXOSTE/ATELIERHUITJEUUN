@@ -82,7 +82,7 @@
                     <span class="neon-text neon-text--red">S</span>
                     <span class="neon-text neon-text--gold">L</span>
                     <span class="neon-text neon-text--red">O</span>
-                    <span class="neon-text neon-text--gold">T</span>
+                    <span class="neon-text neon-text--gold space-after">T</span>
                     <span class="neon-text neon-text--cyan">M</span>
                     <span class="neon-text neon-text--pink">A</span>
                     <span class="neon-text neon-text--cyan">C</span>
@@ -181,25 +181,6 @@
 
             <!-- Result Message -->
             <div class="result-message" id="result-message"></div>
-        </main>
-
-        <div class="credits-modal" id="add-credits-modal">
-            <div class="credits-modal__content">
-                <h2>Ajouter des crédits</h2>
-                <p id="convert">1€ = 320 crédits</p>
-                <label id="credits-input-display" for="credits-input">
-                    <input type="number" id="credits-input" placeholder="Montant" value="1" min="1" max="1443"
-                        required />
-                    <span class="validity"></span>
-                </label>
-                <div class="credits-modal-buttons">
-                    <input type="submit" id="confirm-add-credits" class="btn-control" value="Oui" />
-                    <button id="cancel-add-credits" class="btn-control">Non</button>
-                </div>
-            </div>
-
-            <!-- Result Message -->
-            <div class="result-message" id="result-message"></div>
 
             <!-- History Toggle Button -->
             <div class="flex items-center gap-2 mx-6 mt-3 mb-1 px-4 py-2 rounded-xl border border-white/10 cursor-pointer transition-all hover:border-cyan-400 hover:shadow-[0_0_12px_rgba(0,229,255,0.2)]"
@@ -210,33 +191,48 @@
                     Historique
                 </span>
             </div>
+        </main>
+    </div>
 
-            </main>
-        </div>
-
-        <!-- Pay Table Mini -->
-        <div class="paytable-mini" id="paytable-toggle">
-            <span class="paytable-mini__icon">📋</span>
-            <span class="paytable-mini__text">Table de Paiement</span>
-        </div>
-        <div class="paytable-overlay" id="paytable-overlay">
-            <div class="paytable">
-                <h2>Table de Paiement</h2>
-                <div class="paytable__grid" id="paytable-grid">
-                    <!-- JS injects paytable rows -->
-                </div>
-                <button class="paytable__close" id="paytable-close">Fermer</button>
+    <!-- Credits Modal -->
+    <div class="credits-modal" id="add-credits-modal" style="display: none;">
+        <div class="credits-modal__content">
+            <h2>Ajouter des crédits</h2>
+            <p id="convert">1€ = 320 crédits</p>
+            <label id="credits-input-display" for="credits-input">
+                <input type="number" id="credits-input" placeholder="Montant" value="1" min="1" max="1443" required />
+                <span class="validity"></span>
+            </label>
+            <div class="credits-modal-buttons">
+                <input type="submit" id="confirm-add-credits" class="btn-control" value="Oui" />
+                <button id="cancel-add-credits" class="btn-control">Non</button>
             </div>
+        </div>
+    </div>
 
-            <!-- Sound Effects -->
-            <audio id="spin-sound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"
-                preload="auto"></audio>
-            <audio id="win-sound" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3"
-                preload="auto"></audio>
-            <audio id="lose-sound" src="https://assets.mixkit.co/active_storage/sfx/2004/2004-preview.mp3"
-                preload="auto"></audio>
+    <!-- Pay Table Mini -->
+    <div class="paytable-mini" id="paytable-toggle">
+        <span class="paytable-mini__icon">📋</span>
+        <span class="paytable-mini__text">Table de Paiement</span>
+    </div>
+    <div class="paytable-overlay" id="paytable-overlay">
+        <div class="paytable">
+            <h2>Table de Paiement</h2>
+            <div class="paytable__grid" id="paytable-grid">
+                <!-- JS injects paytable rows -->
+            </div>
+            <button class="paytable__close" id="paytable-close">Fermer</button>
+        </div>
 
-            <script src="./src/main.js"></script>
+        <!-- Sound Effects -->
+        <audio id="spin-sound" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"
+            preload="auto"></audio>
+        <audio id="win-sound" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3"
+            preload="auto"></audio>
+        <audio id="lose-sound" src="https://assets.mixkit.co/active_storage/sfx/2004/2004-preview.mp3"
+            preload="auto"></audio>
+
+        <script src="./src/main.js"></script>
 </body>
 
 </html>
