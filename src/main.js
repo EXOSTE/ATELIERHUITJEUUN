@@ -86,7 +86,7 @@ var SlotEngine = {
         for (var i = 0; i < REEL_LENGTH; i++) {
             // Weighted: rarer symbols appear less often
             var weightedPool = [];
-            SYMBOLS.forEach(function (s) {
+            ROLLS.forEach(function (s) {
                 // Inverse weight: higher multiplier = fewer copies in pool
                 var count = Math.max(1, Math.round(60 / s.multiplier));
                 for (var j = 0; j < count; j++) {
@@ -123,7 +123,7 @@ var SlotEngine = {
         // --- OUTCOME RNG ENGINE ---
         var rnd = Math.random();
         var centerSymbols = [];
-        var pool = SYMBOLS.map(function (s) {
+        var pool = ROLLS.map(function (s) {
             return s;
         });
 
@@ -494,7 +494,7 @@ var SlotUI = {
         this.winEl.textContent = '0';
 
         // Jackpot display (cosmetic)
-        this.jackpotAmountEl.textContent = (SlotEngine.bet * SYMBOLS[0].multiplier).toLocaleString();
+        this.jackpotAmountEl.textContent = (SlotEngine.bet * ROLLS[0].multiplier).toLocaleString();
     },
 
     updateWinDisplay: function (amount) {
@@ -681,7 +681,7 @@ var SlotUI = {
     // --- Paytable ---
     buildPaytable: function () {
         var grid = document.getElementById('paytable-grid');
-        SYMBOLS.forEach(function (s) {
+        ROLLS.forEach(function (s) {
             var row = document.createElement('div');
             row.className = 'paytable__row';
             row.innerHTML =
