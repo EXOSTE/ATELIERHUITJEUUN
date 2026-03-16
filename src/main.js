@@ -20,7 +20,7 @@ const ROLLS = [{
         multiplier: 50
     },
     {
-        id: 'back',
+        id: 'bag',
         emoji: '💰',
         name: 'Sacquet',
         probability: 3,
