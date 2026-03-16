@@ -5,53 +5,61 @@
 
 // CONFIG & SYMBOLS
 
-var SYMBOLS = [{
+const ROLLS = [{
         id: 'seven',
         emoji: '7️⃣',
         name: 'Sept',
-        multiplier: 50
+        probability: 3,
+        multiplier: 100
     },
     {
         id: 'diamond',
         emoji: '💎',
         name: 'Diamant',
-        multiplier: 30
+        probability: 5,
+        multiplier: 50
+    },
+    {
+        id: 'back',
+        emoji: '💰',
+        name: 'Sacquet',
+        probability: 3,
+        multiplier: 25
+    },
+    {
+        id: 'clover',
+        emoji: '🍀',
+        name: 'Trefle',
+        probability: 10,
+        multiplier: 10
     },
     {
         id: 'bell',
         emoji: '🔔',
         name: 'Cloche',
-        multiplier: 20
+        probability: 1,
+        multiplier: 5
     },
     {
         id: 'cherry',
         emoji: '🍒',
         name: 'Cerise',
-        multiplier: 15
+        probability: 19,
+        multiplier: 4
     },
     {
         id: 'lemon',
         emoji: '🍋',
         name: 'Citron',
-        multiplier: 10
-    },
-    {
-        id: 'grape',
-        emoji: '🍇',
-        name: 'Raisin',
-        multiplier: 8
-    },
-    {
-        id: 'watermelon',
-        emoji: '🍉',
-        name: 'Pastèque',
-        multiplier: 5
-    },
-    {
-        id: 'apple',
-        emoji: '🍎',
-        name: 'Pomme',
+        probability: 3,
         multiplier: 3
+    },
+    {
+        id: 'croissant',
+        emoji: '🥐',
+        name: 'Croissant',
+        probability: 20,
+        multiplier: 2
     }
 ];
 
