@@ -84,11 +84,9 @@ var SlotEngine = {
     generateStrip: function () {
         var strip = [];
         for (var i = 0; i < REEL_LENGTH; i++) {
-            // Weighted: rarer symbols appear less often
             var weightedPool = [];
             ROLLS.forEach(function (s) {
-                // Inverse weight: higher multiplier = fewer copies in pool
-                var count = Math.max(1, Math.round(60 / s.multiplier));
+                var count = s.probability;
                 for (var j = 0; j < count; j++) {
                     weightedPool.push(s);
                 }
@@ -120,73 +118,21 @@ var SlotEngine = {
             Math.floor(Math.random() * (REEL_LENGTH - VISIBLE_SYMBOLS))
         ];
 
-        // --- OUTCOME RNG ENGINE ---
-        var rnd = Math.random();
-        var centerSymbols = [];
-        var pool = ROLLS.map(function (s) {
-            return s;
+        // --- PURE NATURAL PROBABILITY RNG ---
+        // Build the 64-item pool exactly based on probabilities
+        var pool = [];
+        ROLLS.forEach(function (s) {
+            for (var i = 0; i < s.probability; i++) {
+                pool.push(s);
+            }
         });
 
-        if (rnd < 0.65) {
-            // LOSE (65%): 3 different symbols (no cherry)
-            var noCherryPool = pool.filter(function (s) {
-                return s.id !== 'cherry';
-            });
-            noCherryPool.sort(function () {
-                return 0.5 - Math.random();
-            });
-            centerSymbols = [noCherryPool[0], noCherryPool[1], noCherryPool[2]];
-        } else if (rnd < 0.85) {
-            // SMALL WIN (20%): 1 cherry, 2 distinct non-cherries
-            var noCherryPool = pool.filter(function (s) {
-                return s.id !== 'cherry';
-            });
-            noCherryPool.sort(function () {
-                return 0.5 - Math.random();
-            });
-            var cherry = pool.find(function (s) {
-                return s.id === 'cherry';
-            });
-            centerSymbols = [noCherryPool[0], noCherryPool[1], cherry];
-            centerSymbols.sort(function () {
-                return 0.5 - Math.random();
-            });
-        } else if (rnd < 0.96) {
-            // MEDIUM WIN (11%): 2 matches
-            var weightedPool = [];
-            pool.forEach(function (s) {
-                var weight = Math.max(1, Math.round(50 / s.multiplier)); // lower multiplier = more common
-                for (var i = 0; i < weight; i++) weightedPool.push(s);
-            });
-            var matchSym = weightedPool[Math.floor(Math.random() * weightedPool.length)];
-            var distinctPool = pool.filter(function (s) {
-                return s.id !== matchSym.id && s.id !== 'cherry';
-            });
-            if (distinctPool.length === 0) distinctPool = pool;
-            var otherSym = distinctPool[Math.floor(Math.random() * distinctPool.length)];
-            centerSymbols = [matchSym, matchSym, otherSym];
-            centerSymbols.sort(function () {
-                return 0.5 - Math.random();
-            });
-        } else if (rnd < 0.995) {
-            // BIG WIN (3.5%): 3 matches of anything but 'seven'
-            var noJackpotPool = pool.filter(function (s) {
-                return s.id !== 'seven';
-            });
-            var weightedPool = [];
-            noJackpotPool.forEach(function (s) {
-                var weight = Math.max(1, Math.round(30 / s.multiplier));
-                for (var i = 0; i < weight; i++) weightedPool.push(s);
-            });
-            var matchSym = weightedPool[Math.floor(Math.random() * weightedPool.length)];
-            centerSymbols = [matchSym, matchSym, matchSym];
-        } else {
-            // JACKPOT (0.5%): 3 Sevens
-            var seven = pool.find(function (s) {
-                return s.id === 'seven';
-            });
-            centerSymbols = [seven, seven, seven];
-        }
+        // 3 independent draws from the 64-pool
+        var centerSymbols = [
+            pool[Math.floor(Math.random() * pool.length)],
+            pool[Math.floor(Math.random() * pool.length)],
+            pool[Math.floor(Math.random() * pool.length)]
+        ];
 
         // Force the chosen symbols into the animation target spots
         reels[0][targetIndices[0] + 1] = centerSymbols[0];
@@ -270,6 +216,25 @@ var SlotUI = {
         []
     ],
     history: [],
+    spaceCount: 0,
+    spinTimeouts: [],
+    winInterval: null,
+    currentResult: null,
+
+    clearTimeouts: function() {
+        this.spinTimeouts.forEach(clearTimeout);
+        this.spinTimeouts = [];
+        if (this.winInterval) {
+            clearInterval(this.winInterval);
+            this.winInterval = null;
+        }
+    },
+
+    addTimeout: function(fn, delay) {
+        var id = setTimeout(fn, delay);
+        this.spinTimeouts.push(id);
+        return id;
+    },
 
     init: function () {
         var self = this;
@@ -395,7 +360,7 @@ var SlotUI = {
                 var duration = SPIN_DURATION_BASE + (reelIdx * SPIN_DURATION_STEP);
                 var delay = reelIdx * 150;
 
-                setTimeout(function () {
+                self.addTimeout(function () {
                     reel.style.transition = 'transform ' + (duration / 1000) + 's cubic-bezier(0.12, 0.8, 0.14, 1)';
                     var targetIdx = result.targetIndices[reelIdx] + 1; // center symbol
                     reel.style.transform = 'translateY(' + self.getOffset(targetIdx) + 'px)';
@@ -405,7 +370,7 @@ var SlotUI = {
 
         // After last reel stops
         var totalDuration = SPIN_DURATION_BASE + (2 * SPIN_DURATION_STEP) + (2 * 150) + 200;
-        setTimeout(function () {
+        this.addTimeout(function () {
             self.onSpinComplete(result);
         }, totalDuration);
     },
@@ -450,7 +415,7 @@ var SlotUI = {
 
         // Unlock
         var self = this;
-        setTimeout(function () {
+        this.addTimeout(function () {
             self.spinBtn.disabled = false;
             self.machineEl.classList.remove('machine--win', 'machine--jackpot', 'machine--lose');
         }, 2500);
@@ -460,7 +425,7 @@ var SlotUI = {
         this.resultEl.classList.remove('show', 'win', 'jackpot', 'lose');
 
         var self = this;
-        setTimeout(function () {
+        this.addTimeout(function () {
             if (payout.type === 'jackpot') {
                 self.resultEl.textContent = '🎰 JACKPOT ! +' + payout.amount + ' CRÉDITS !';
                 self.resultEl.classList.add('jackpot');
@@ -482,7 +447,7 @@ var SlotUI = {
         }, 50);
 
         // Hide after delay
-        setTimeout(function () {
+        this.addTimeout(function () {
             self.resultEl.classList.remove('show');
         }, 3000);
     },
@@ -617,9 +582,17 @@ var SlotUI = {
 
         // Keyboard: Space = spin
         document.addEventListener('keydown', function (e) {
-            if (e.code === 'Space' && !SlotEngine.isSpinning) {
+            if (e.code === 'Space' && !e.repeat) {
                 e.preventDefault();
-                self.handleSpin();
+                if (!SlotEngine.isSpinning) {
+                    self.handleSpin();
+                } else {
+                    self.spaceCount++;
+                    if (self.spaceCount >= 3) {
+                        self.spaceCount = 0;
+                        self.skipSpinAnimation();
+                    }
+                }
             }
         });
     },
@@ -627,11 +600,15 @@ var SlotUI = {
     handleSpin: function () {
         if (SlotEngine.isSpinning) return;
 
+        this.spaceCount = 0;
+        this.clearTimeouts();
+        this.winEl.textContent = '0';
+
         if (SlotEngine.credits < SlotEngine.bet) {
             this.resultEl.textContent = '⚠️ Crédits insuffisants !';
             this.resultEl.classList.remove('win', 'jackpot', 'lose');
             this.resultEl.classList.add('show', 'lose');
-            setTimeout(function () {
+            this.addTimeout(function () {
                 document.getElementById('result-message').classList.remove('show');
             }, 2000);
             return;
@@ -639,6 +616,7 @@ var SlotUI = {
 
         var result = SlotEngine.spin();
         if (!result) return;
+        this.currentResult = result;
 
         // Lock
         this.spinBtn.disabled = true;
@@ -656,11 +634,47 @@ var SlotUI = {
         // Animate win counter
         var self = this;
         var totalDuration = SPIN_DURATION_BASE + (2 * SPIN_DURATION_STEP) + (2 * 150) + 200;
-        setTimeout(function () {
+        this.addTimeout(function () {
             if (result.payout.amount > 0) {
                 self.animateWinCounter(result.payout.amount);
             }
         }, totalDuration);
+    },
+
+    skipSpinAnimation: function() {
+        if (!this.currentResult) return;
+
+        this.clearTimeouts();
+        
+        // Force reels to final positions
+        for (var r = 0; r < 3; r++) {
+            var reel = this.reelEls[r];
+            reel.style.transition = 'none';
+            var targetIdx = this.currentResult.targetIndices[r] + 1;
+            reel.style.transform = 'translateY(' + this.getOffset(targetIdx) + 'px)';
+            
+            // Highlight center symbols
+            var symbolEls = reel.children;
+            if (symbolEls[targetIdx]) {
+                symbolEls[targetIdx].classList.add('active');
+            }
+        }
+        
+        // Process results
+        SlotEngine.finishSpin(this.currentResult.payout);
+        this.updateDisplay();
+        this.addHistoryEntry(this.currentResult);
+        
+        // Reset UI states quickly
+        this.spinBtn.disabled = false;
+        this.machineEl.classList.remove('machine--win', 'machine--jackpot', 'machine--lose');
+        this.resultEl.classList.remove('show', 'win', 'jackpot', 'lose');
+        
+        // Audio
+        this.stopSound(this.spinSound);
+        
+        this.currentResult = null;
+        this.handleSpin(); // Relance directement un tour
     },
 
     animateWinCounter: function (target) {
@@ -668,11 +682,12 @@ var SlotUI = {
         var current = 0;
         var steps = 20;
         var increment = Math.ceil(target / steps);
-        var interval = setInterval(function () {
+        this.winInterval = setInterval(function () {
             current += increment;
             if (current >= target) {
                 current = target;
-                clearInterval(interval);
+                clearInterval(self.winInterval);
+                self.winInterval = null;
             }
             self.winEl.textContent = current;
         }, 50);
