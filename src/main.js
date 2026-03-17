@@ -161,19 +161,19 @@ var SlotEngine = {
             };
         }
 
-        // 2 of a kind
-        if (a.id === b.id || b.id === c.id || a.id === c.id) {
+        // Any bell  = small win
+        if (a.id === 'bell' || b.id === 'bell' || c.id === 'bell') {
             var matchSymbol = (a.id === b.id) ? a : c;
             var mult = Math.max(2, Math.round(matchSymbol.multiplier / 5));
             return {
                 type: 'win',
                 multiplier: mult,
-                amount: this.bet * mult
+                amount: this.bet * (mult / 3).toFixed()
             };
         }
 
-        // Any cherry = small win
-        if (a.id === 'cherry' || b.id === 'cherry' || c.id === 'cherry') {
+        // 2 of a kind
+        if (a.id === b.id || b.id === c.id) {
             return {
                 type: 'small',
                 multiplier: 1,
@@ -221,7 +221,7 @@ var SlotUI = {
     winInterval: null,
     currentResult: null,
 
-    clearTimeouts: function() {
+    clearTimeouts: function () {
         this.spinTimeouts.forEach(clearTimeout);
         this.spinTimeouts = [];
         if (this.winInterval) {
@@ -230,7 +230,7 @@ var SlotUI = {
         }
     },
 
-    addTimeout: function(fn, delay) {
+    addTimeout: function (fn, delay) {
         var id = setTimeout(fn, delay);
         this.spinTimeouts.push(id);
         return id;
@@ -641,38 +641,38 @@ var SlotUI = {
         }, totalDuration);
     },
 
-    skipSpinAnimation: function() {
+    skipSpinAnimation: function () {
         if (!this.currentResult) return;
 
         this.clearTimeouts();
-        
+
         // Force reels to final positions
         for (var r = 0; r < 3; r++) {
             var reel = this.reelEls[r];
             reel.style.transition = 'none';
             var targetIdx = this.currentResult.targetIndices[r] + 1;
             reel.style.transform = 'translateY(' + this.getOffset(targetIdx) + 'px)';
-            
+
             // Highlight center symbols
             var symbolEls = reel.children;
             if (symbolEls[targetIdx]) {
                 symbolEls[targetIdx].classList.add('active');
             }
         }
-        
+
         // Process results
         SlotEngine.finishSpin(this.currentResult.payout);
         this.updateDisplay();
         this.addHistoryEntry(this.currentResult);
-        
+
         // Reset UI states quickly
         this.spinBtn.disabled = false;
         this.machineEl.classList.remove('machine--win', 'machine--jackpot', 'machine--lose');
         this.resultEl.classList.remove('show', 'win', 'jackpot', 'lose');
-        
+
         // Audio
         this.stopSound(this.spinSound);
-        
+
         this.currentResult = null;
         this.handleSpin(); // Relance directement un tour
     },
