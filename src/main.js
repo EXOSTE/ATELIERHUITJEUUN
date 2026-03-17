@@ -168,7 +168,7 @@ var SlotEngine = {
             return {
                 type: 'win',
                 multiplier: mult,
-                amount: this.bet * (mult / 3).toFixed(0)
+                amount: this.bet * (mult / 3).toFixed()
             };
         }
 
