@@ -152,7 +152,7 @@ var SlotEngine = {
             b = symbols[1],
             c = symbols[2];
 
-        // 3 of a kind
+        // 3 of a kind = jackpot
         if (a.id === b.id && b.id === c.id) {
             return {
                 type: 'jackpot',
@@ -161,21 +161,21 @@ var SlotEngine = {
             };
         }
 
-        // Any bell  = small win
-        if (a.id === 'bell' || b.id === 'bell' || c.id === 'bell') {
+        // 2 of a kind = small win
+        if (a.id === b.id || b.id === c.id) {
             var matchSymbol = (a.id === b.id) ? a : c;
-            var mult = Math.max(2, Math.round(matchSymbol.multiplier / 5));
+            var mult = matchSymbol.multiplier / 3;
             return {
-                type: 'win',
-                multiplier: mult,
-                amount: this.bet * (mult / 3).toFixed()
+                type: 'small',
+                multiplier: parseFloat((mult).toFixed(2)),
+                amount: parseInt((this.bet * mult).toFixed())
             };
         }
 
-        // 2 of a kind
-        if (a.id === b.id || b.id === c.id) {
+        // Any bell = pity win
+        if (a.id === 'bell' || b.id === 'bell' || c.id === 'bell') {
             return {
-                type: 'small',
+                type: 'pity',
                 multiplier: 1,
                 amount: this.bet
             };
