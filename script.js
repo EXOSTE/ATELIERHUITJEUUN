@@ -1,4 +1,4 @@
-const possibilité = ["Résultat 1 :7", "Résultat 2 : Diamand", "Résultat 3: Cerise "];
+const possibilité = ["Résultat 1 :7", "Résultat 2 : Diamant", "Résultat 3: Cerise "];
 const boutonLevier = document.getElementById("boutonLevier");
 const messageStatut = document.getElementById("messageStatut");
 const AfficheResultat = document.getElementById("AfficheResultat");
